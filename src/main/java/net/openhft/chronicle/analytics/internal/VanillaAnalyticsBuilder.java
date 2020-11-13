@@ -23,15 +23,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public final class VanillaAnalyticsBuilder implements Analytics.Builder {
 
     private final String measurementId;
     private final String apiSecret;
+    //
     private final Map<String, String> userProperties = new LinkedHashMap<>();
     private final Map<String, String> eventParameters = new LinkedHashMap<>();
+    private Consumer<String> errorLogger = System.err::println;
+    private Consumer<String> debugLogger = s -> {};
     private long duration;
     private TimeUnit timeUnit;
+
 
     public VanillaAnalyticsBuilder(@NotNull final String measurementId, @NotNull final String apiSecret) {
         this.measurementId = measurementId;
@@ -57,6 +62,18 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder {
     public Analytics.Builder withFrequencyLimit(final long duration, @NotNull final TimeUnit timeUnit) {
         this.duration = duration;
         this.timeUnit = timeUnit;
+        return this;
+    }
+
+    @Override
+    public Analytics.Builder withErrorLogger(@NotNull final Consumer<String> errorLogger) {
+        this.errorLogger = errorLogger;
+        return this;
+    }
+
+    @Override
+    public Analytics.Builder withDebugLogger(@NotNull final Consumer<String> debugLogger) {
+        this.debugLogger = debugLogger;
         return this;
     }
 

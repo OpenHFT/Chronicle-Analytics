@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * Provides means for libraries to report analytics to an upstream receiver.
@@ -72,7 +73,8 @@ public interface Analytics {
          * The key will be used as a Google Analytics "user property" key with the
          * associated value.
          * </p>
-         * @param key to associate
+         *
+         * @param key   to associate
          * @param value to associate with the key
          * @return this builder
          */
@@ -87,7 +89,8 @@ public interface Analytics {
          * The key will be used as a Google Analytics "event parameter" key with the
          * associated value.
          * </p>
-         * @param key to associate
+         *
+         * @param key   to associate
          * @param value to associate with the key
          * @return this builder
          */
@@ -102,9 +105,9 @@ public interface Analytics {
          * <p>
          * Thus, the highest rate of messages sent upstream can be calculated using the
          * following function {@code
-         *
-         *     1.0d/timeUnit.toSeconds(duration)
-         *
+         * <p>
+         * 1.0d/timeUnit.toSeconds(duration)
+         * <p>
          * }
          * which yields messages per second.
          *
@@ -114,6 +117,37 @@ public interface Analytics {
          */
         @NotNull
         Builder withFrequencyLimit(long duration, @NotNull TimeUnit timeUnit);
+
+
+        /**
+         * Specifies a custom logger that will receive error messages.
+         * For example, failed HTTP communications.
+         * <p>
+         * The default logger is {@link System#err::println}, i.e. messages will be
+         * output to the error console.
+         * <p>
+         * The actual messages sent to the error logger are unspecified
+         * and shall not be acted on by logic.
+         *
+         * @param errorLogger to use for error messages.
+         * @return this builder
+         */
+        Builder withErrorLogger(@NotNull Consumer<String> errorLogger);
+
+        /**
+         * Specifies a custom logger that will receive debug messages.
+         * For example, HTTP messages sent back and forth.
+         * <p>
+         * The default logger is {@code s -> {}}, i.e. messages will be
+         * discarded.
+         * <p>
+         * The actual messages sent to the debug logger are unspecified
+         * and shall not be acted on by logic.
+         *
+         * @param debugLogger to use for debug messages.
+         * @return this builder
+         */
+        Builder withDebugLogger(@NotNull Consumer<String> debugLogger);
 
         /**
          * Creates and returns a new Analytics instance for this Builder.
