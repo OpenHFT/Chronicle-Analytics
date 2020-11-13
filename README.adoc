@@ -2,7 +2,7 @@
 
 image:https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics/badge.svg[Maven Central,link=https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics]
 
-This library provides remote input access to Google Analytics V4 allowing usage statistics to be collected for Java applications.
+This library provides remote input access to Google Analytics 4 allowing usage statistics to be collected for Java applications.
 
 == API
 
@@ -32,7 +32,13 @@ public class AnalyticsExample {
 }
 ----
 
-When applications like this one are run, statistics will be gathered by Google Analytics (V4) allowing detailed insight as to how, where and when the application is used.
+When applications like this one are run, statistics will be gathered by Google Analytics 4 allowing detailed insight as to how, where and when the application is used.
+
+== Google Analytics 4 example
+
+Here is an example of how the data above could be rendered using Google Analytics 4.
+
+image::docs/images/GA4_example.png[Google Analytics 4 Example]
 
 == Thread usage
 
