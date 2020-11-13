@@ -22,11 +22,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public final class VanillaAnalyticsBuilder implements Analytics.Builder {
+public final class VanillaAnalyticsBuilder implements Analytics.Builder, AnalyticsConfiguration {
 
+    private boolean built;
     private final String measurementId;
     private final String apiSecret;
     //
@@ -35,8 +37,8 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder {
     private Consumer<String> errorLogger = System.err::println;
     private Consumer<String> debugLogger = s -> {};
     private long duration;
-    private TimeUnit timeUnit;
-
+    private TimeUnit timeUnit = TimeUnit.SECONDS;
+    private String clientIdFileName = Optional.ofNullable(System.getProperty("user.home")).orElse(".") + "/chronicle.analytics.client.id";
 
     public VanillaAnalyticsBuilder(@NotNull final String measurementId, @NotNull final String apiSecret) {
         this.measurementId = measurementId;
@@ -60,6 +62,9 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder {
     @NotNull
     @Override
     public Analytics.Builder withFrequencyLimit(final long duration, @NotNull final TimeUnit timeUnit) {
+        if (duration < 0) {
+            throw new IllegalArgumentException("duration must not be negative, was " + duration);
+        }
         this.duration = duration;
         this.timeUnit = timeUnit;
         return this;
@@ -77,10 +82,68 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder {
         return this;
     }
 
+    @Override
+    public Analytics.Builder withClientIdFileName(@NotNull final String clientIdFileName) {
+        this.clientIdFileName = clientIdFileName;
+        return this;
+    }
+
     @NotNull
     @Override
     public Analytics build() {
-        return null;
+        if (built)
+            // This protects from modifying the builder after it has been used to build a new object.
+            throw new IllegalStateException("This builder has already been used.");
+        built = true;
+        return new GoogleAnalytics(this);
     }
 
+    // Accessors
+
+    @Override
+    public @NotNull String measurementId() {
+        return measurementId;
+    }
+
+    @Override
+    public @NotNull String apiSecret() {
+        return apiSecret;
+    }
+
+    @Override
+    public @NotNull Map<String, String> userProperties() {
+        // ok because the builder cannot be reused
+        return userProperties;
+    }
+
+    @Override
+    public @NotNull Map<String, String> eventParameters() {
+        // ok because the builder cannot be reused
+        return eventParameters;
+    }
+
+    @Override
+    public @NotNull Consumer<String> errorLogger() {
+        return errorLogger;
+    }
+
+    @Override
+    public @NotNull Consumer<String> debugLogger() {
+        return debugLogger;
+    }
+
+    @Override
+    public long duration() {
+        return duration;
+    }
+
+    @Override
+    public @NotNull TimeUnit timeUnit() {
+        return timeUnit;
+    }
+
+    @Override
+    public @NotNull String clientIdFileName() {
+        return clientIdFileName;
+    }
 }

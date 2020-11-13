@@ -150,6 +150,18 @@ public interface Analytics {
         Builder withDebugLogger(@NotNull Consumer<String> debugLogger);
 
         /**
+         * Specifies a custom file name to use when storing a persistent client id
+         * used to identify returning users.
+         * <p>
+         * By default, a file named "chronicle.analytics.client.id" located
+         * in the user's home directory will be used.
+         *
+         * @param clientIdFileName used to store the persistent client id.
+         * @return this builder
+         */
+        Builder withClientIdFileName(@NotNull String clientIdFileName);
+
+        /**
          * Creates and returns a new Analytics instance for this Builder.
          *
          * @return a new Analytics instance for this Builder

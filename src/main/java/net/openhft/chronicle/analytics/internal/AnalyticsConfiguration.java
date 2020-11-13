@@ -15,22 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.openhft.chronicle.analytics;
+package net.openhft.chronicle.analytics.internal;
 
-import org.junit.jupiter.api.Test;
+import org.jetbrains.annotations.NotNull;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
-final class AnalyticsTest {
-
-    @Test
-    void defaultClientIdFileName() {
-
-    }
-
-    @Test
-    void a() {
-        assertEquals(1,1);
-    }
-
+public interface AnalyticsConfiguration {
+    @NotNull String measurementId();
+    @NotNull String apiSecret();
+    @NotNull Map<String, String> userProperties();
+    @NotNull Map<String, String> eventParameters();
+    @NotNull Consumer<String> errorLogger();
+    @NotNull Consumer<String> debugLogger();
+    long duration();
+    @NotNull TimeUnit timeUnit();
+    @NotNull String clientIdFileName();
 }

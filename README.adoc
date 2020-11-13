@@ -42,7 +42,7 @@ image::docs/images/GA4_example.png[Google Analytics 4 Example]
 
 == Thread usage
 
-The library is using a single thread named `"analytics-http-client"` to send requests. This thread is initially started on demand and will remain sleeping throughout the lifespan of the JVM.
+The library is using a single thread named `"analytics-http-client"` to send requests. This thread is initially started on demand and will remain dormant throughout the lifespan of the JVM.
 
 
 
