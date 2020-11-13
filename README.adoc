@@ -1,0 +1,9 @@
+= Chronicle-Analytics
+
+image:https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics/badge.svg[Maven Central,link=https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics]
+
+This library provides remote input access to Google Analytics V4 allowing usage statistics to be collected for Java applications.
+
+
+
+
