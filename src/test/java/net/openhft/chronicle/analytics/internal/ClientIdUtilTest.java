@@ -48,6 +48,7 @@ class ClientIdUtilTest {
     void acquireClientIdIllegalFile() {
         final String illegalFileName = ".";
         final String clientId = ClientIdUtil.acquireClientId(illegalFileName, debugMessages::add);
+        assertNotNull(clientId);
 
         assertEquals(2, debugMessages.size());
         assertTrue(debugMessages.get(0).contains("file not present"));

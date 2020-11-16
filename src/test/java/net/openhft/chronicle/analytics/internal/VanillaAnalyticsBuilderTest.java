@@ -1,13 +1,11 @@
 package net.openhft.chronicle.analytics.internal;
 
 import net.openhft.chronicle.analytics.Analytics;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -133,7 +131,7 @@ class VanillaAnalyticsBuilderTest {
 
     @Test
     void fileName() {
-        final String defaultFileName = System.getProperty("user.home") + "/chronicle.analytics.client.id";
+        final String defaultFileName = System.getProperty("user.home") + "/.chronicle.analytics.client.id";
         assertEquals(defaultFileName, newInstance().clientIdFileName());
     }
 

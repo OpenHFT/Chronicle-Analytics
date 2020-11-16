@@ -39,7 +39,7 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     };
     private long duration;
     private TimeUnit timeUnit = TimeUnit.SECONDS;
-    private String clientIdFileName = Optional.ofNullable(System.getProperty("user.home")).orElse(".") + "/chronicle.analytics.client.id";
+    private String clientIdFileName = Optional.ofNullable(System.getProperty("user.home")).orElse(".") + "/.chronicle.analytics.client.id";
     private String url = "https://www.google-analytics.com/mp/collect";
     private boolean reportDespiteJUnit;
 
@@ -112,7 +112,7 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
         built = true;
 
         if (JUnitUtil.isJUnitAvailable() && !reportDespiteJUnit)
-            return new MuteAnalytics();
+            return MuteAnalytics.INSTANCE;
         else
             return new GoogleAnalytics(this);
     }

@@ -1,34 +1,35 @@
 package net.openhft.chronicle.analytics.internal;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 final class GoogleAnalyticsTest {
 
     @Test
     void jsonFor() {
         final String expected = "{\n" +
-                " \"clientId\": \"123\",\n" +
-                " \"userId\": \"123\",\n" +
-                " \"nonPersonalizedAds\": true,\n" +
-                " \"events\": [{\n" +
-                "  \"name\": \"started\",\n" +
-                "  \"params\": {\n" +
-                "   \"A\": \"1\",\n" +
-                "   \"B\": \"2\"\n" +
+                " 'clientId': '123',\n" +
+                " 'userId': '123',\n" +
+                " 'nonPersonalizedAds': true,\n" +
+                " 'events': [{\n" +
+                "  'name': 'started',\n" +
+                "  'params': {\n" +
+                "   'A': '1',\n" +
+                "   'B': '2'\n" +
                 "  }\n" +
                 " }],\n" +
-                " \"userProperties\": {\n" +
-                "  \"C\": {\n" +
-                "    \"value\": \"3\"\n" +
+                " 'userProperties': {\n" +
+                "  'C': {\n" +
+                "    'value': '3'\n" +
                 "  },\n" +
-                "  \"D\": {\n" +
-                "    \"value\": \"4\"\n" +
+                "  'D': {\n" +
+                "    'value': '4'\n" +
                 "  }\n" +
                 " }\n" +
                 "}";
@@ -37,7 +38,7 @@ final class GoogleAnalyticsTest {
         final Map<String, String> userProperties = testMap(2);
         final String actual = GoogleAnalytics.jsonFor("started", "123", eventParameters, userProperties);
 
-        assertEquals(expected, actual);
+        assertEquals(expected, actual.replace('"', '\''));
     }
 
     @Test
@@ -57,9 +58,15 @@ final class GoogleAnalyticsTest {
 
     private Map<String, String> testMap(int start) {
         final Map<String, String> map = new LinkedHashMap<>();
-        map.put(Character.toString((char) ('A' + start)), Character.toString((char) ('1' + start)));
-        map.put(Character.toString((char) ('B' + start)), Character.toString((char) ('2' + start)));
+        map.put(asChar('A', start), asChar('1', start));
+        map.put(asChar('B', start), asChar('2', start));
         return map;
+    }
+
+    @NotNull
+    private String asChar(char base, int offset) {
+        base += offset;
+        return "" + base;
     }
 
 }

@@ -20,7 +20,8 @@ package net.openhft.chronicle.analytics.internal;
 import net.openhft.chronicle.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -73,16 +74,16 @@ final class GoogleAnalytics implements Analytics {
                           @NotNull final Map<String, String> userProperties) {
         return Stream.of(
                 "{",
-                jsonElement(" ", "clientId", clientId) + ",",
-                jsonElement(" ", "userId", clientId) + ",",
-                jsonElement(" ", "nonPersonalizedAds", true) + ",",
-                " " + asElement("events") + ": [{",
-                jsonElement("  ", "name", eventName) + ",",
+                jsonElement(" ", "clientId", clientId) + ',',
+                jsonElement(" ", "userId", clientId) + ',',
+                jsonElement(" ", "nonPersonalizedAds", true) + ',',
+                ' ' + asElement("events") + ": [{",
+                jsonElement("  ", "name", eventName) + ',',
                 "  " + asElement("params") + ": {",
                 renderMap(eventParameters, e -> jsonElement("   ", e.getKey(), e.getValue())),
                 "  }",
                 " }],",
-                " " + asElement("userProperties") + ": {",
+                ' ' + asElement("userProperties") + ": {",
                 renderMap(userProperties, GoogleAnalytics::userProperty),
                 " }",
                 "}"

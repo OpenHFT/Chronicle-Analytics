@@ -15,7 +15,7 @@ final class JsonUtil {
 
     static String asElement(final Object value) {
         return value instanceof CharSequence
-                ? "\"" + escape(value.toString()) + "\""
+                ? '"' + escape(value.toString()) + '"'
                 : value.toString();
 
     }

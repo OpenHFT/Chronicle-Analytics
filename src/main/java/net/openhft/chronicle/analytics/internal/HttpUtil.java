@@ -30,22 +30,30 @@ import java.util.function.Consumer;
 
 final class HttpUtil {
 
-    private HttpUtil() {
-    }
-
     private static final String THREAD_NAME = "chronicle-analytics-http-client";
-
     private static final Executor EXECUTOR = Executors.newSingleThreadExecutor(runnable -> {
         final Thread thread = new Thread(runnable, THREAD_NAME);
         thread.setDaemon(true);
         return thread;
     });
 
+    private HttpUtil() {
+    }
+
     public static void send(@NotNull final String urlString,
                             @NotNull final String json,
                             @NotNull final Consumer<String> errorLogger,
                             @NotNull final Consumer<String> debugLogger) {
         EXECUTOR.execute(new Sender(urlString, json, errorLogger, debugLogger));
+    }
+
+    static String urlEncode(@NotNull final String s, @NotNull final Consumer<String> errorLogger) {
+        try {
+            return URLEncoder.encode(s, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            errorLogger.accept(e.toString());
+            throw new InternalAnalyticsException("This should never happen as " + StandardCharsets.UTF_8.toString() + " should always be present.");
+        }
     }
 
     static final class Sender implements Runnable {
@@ -83,25 +91,17 @@ final class HttpUtil {
 
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
                     final StringBuilder response = new StringBuilder();
-                    String responseLine = null;
-                    while ((responseLine = br.readLine()) != null) {
-                        response.append(responseLine.trim());
+                    String sep = "";
+                    for (String responseLine; (responseLine = br.readLine()) != null; ) {
+                        response.append(sep).append(responseLine); // preserve some white space
+                        sep = " ";
                     }
-                    debugLogger.accept(response.toString());
+                    debugLogger.accept(response.toString().replaceAll("\\s+(?=\\S)", " "));
                 }
 
             } catch (IOException ioe) {
                 errorLogger.accept(ioe.toString());
             }
-        }
-    }
-
-    static String urlEncode(@NotNull final String s, @NotNull final Consumer<String> errorLogger) {
-        try {
-            return URLEncoder.encode(s, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            errorLogger.accept(e.toString());
-            throw new InternalAnalyticsException("This should never happen as " + StandardCharsets.UTF_8.toString() + " should always be present.");
         }
     }
 

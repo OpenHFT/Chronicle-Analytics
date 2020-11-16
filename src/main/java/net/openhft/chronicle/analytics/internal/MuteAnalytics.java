@@ -5,7 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-final class MuteAnalytics implements Analytics {
+enum MuteAnalytics implements Analytics {
+    INSTANCE;
 
     @Override
     public void sendEvent(@NotNull String name, @NotNull Map<String, String> additionalEventParameters) {
