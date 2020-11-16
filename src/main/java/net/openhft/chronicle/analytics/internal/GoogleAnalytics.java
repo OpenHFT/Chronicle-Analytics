@@ -20,18 +20,14 @@ package net.openhft.chronicle.analytics.internal;
 import net.openhft.chronicle.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
+import static net.openhft.chronicle.analytics.internal.HttpUtil.urlEncode;
+import static net.openhft.chronicle.analytics.internal.JsonUtil.asElement;
+import static net.openhft.chronicle.analytics.internal.JsonUtil.jsonElement;
 
 final class GoogleAnalytics implements Analytics {
 
@@ -40,9 +36,9 @@ final class GoogleAnalytics implements Analytics {
     private final AnalyticsConfiguration configuration;
     private final String clientId;
 
-    GoogleAnalytics(AnalyticsConfiguration configuration) {
+    GoogleAnalytics(@NotNull final AnalyticsConfiguration configuration) {
         this.configuration = configuration;
-        this.clientId = acquireClientId();
+        this.clientId = ClientIdUtil.acquireClientId(configuration.clientIdFileName(), configuration.debugLogger());
     }
 
     @Override
@@ -57,14 +53,15 @@ final class GoogleAnalytics implements Analytics {
     }
 
     private void httpSend(@NotNull String eventName, @NotNull final Map<String, String> eventParameters) {
-        final String url = ENDPOINT_URL + "?measurement_id=" + urlEncode(configuration.measurementId()) + "&api_secret=" + urlEncode(configuration.apiSecret());
-        final String json = jsonFor(eventName, eventParameters, configuration.userProperties());
+        final String url = ENDPOINT_URL + "?measurement_id=" + urlEncode(configuration.measurementId(), configuration.errorLogger()) + "&api_secret=" + urlEncode(configuration.apiSecret(), configuration.errorLogger());
+        final String json = jsonFor(eventName, clientId, eventParameters, configuration.userProperties());
         HttpUtil.send(url, json, configuration.errorLogger(), configuration.debugLogger());
     }
 
-    private String jsonFor(@NotNull final String eventName,
-                           @NotNull final Map<String, String> eventParameters,
-                           @NotNull final Map<String, String> userProperties) {
+    static String jsonFor(@NotNull final String eventName,
+                          @NotNull final String clientId,
+                          @NotNull final Map<String, String> eventParameters,
+                          @NotNull final Map<String, String> userProperties) {
         return Stream.of(
                 "{",
                 jsonElement(" ", "clientId", clientId) + ",",
@@ -77,71 +74,21 @@ final class GoogleAnalytics implements Analytics {
                 "  }",
                 " }],",
                 " " + asElement("userProperties") + ": {",
-                renderMap(userProperties, this::userProperty),
+                renderMap(userProperties, GoogleAnalytics::userProperty),
                 " }",
                 "}"
-        ).collect(joining(nl()));
+        ).collect(joining(JsonUtil.nl()));
     }
 
-    private String jsonElement(final String indent,
-                               final String key,
-                               final Object value) {
-        return indent + asElement(key) + ": " + asElement(value);
-    }
 
-    private String asElement(final Object value) {
-        return value instanceof CharSequence
-                ? "\"" + value + "\""
-                : value.toString();
-
-    }
-
-    private String userProperty(final Map.Entry<String, String> userProperty) {
+    static String userProperty(final Map.Entry<String, String> userProperty) {
         return String.format("  %s: {%n %s%n  }", asElement(userProperty.getKey()), jsonElement("   ", "value", userProperty.getValue()));
     }
 
-    private String urlEncode(final String s) {
-        try {
-            return URLEncoder.encode(s, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            configuration.errorLogger().accept(e.toString());
-            throw new InternalAnalyticsException("This should never happen as " + StandardCharsets.UTF_8.toString() + " should always be present.");
-        }
-    }
-
-    private String renderMap(@NotNull final Map<String, String> map, @NotNull final Function<Map.Entry<String, String>, String> mapper) {
+    static String renderMap(@NotNull final Map<String, String> map, @NotNull final Function<Map.Entry<String, String>, String> mapper) {
         return map.entrySet().stream()
                 .map(mapper)
                 .collect(joining(String.format(",%n")));
-    }
-
-    // This tries to read a client id from a "cookie" file in the
-    // user's home directory. If that fails, a new random clientId
-    // is generated and an attempt is made to save it in said file.
-    private String acquireClientId() {
-        final Path path = Paths.get(configuration.clientIdFileName());
-        try {
-            try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
-                return lines
-                        .findFirst()
-                        .map(UUID::fromString)
-                        .orElseThrow(NoSuchElementException::new)
-                        .toString();
-            }
-        } catch (Exception ignore) {
-            configuration.debugLogger().accept("Client id file not present: " + path.toAbsolutePath().toString());
-        }
-        final String id = UUID.randomUUID().toString();
-        try {
-            Files.write(path, id.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException ignore) {
-            configuration.debugLogger().accept("Unable to create client id file: " + path.toAbsolutePath().toString());
-        }
-        return id;
-    }
-
-    private String nl() {
-        return String.format("%n");
     }
 
 }

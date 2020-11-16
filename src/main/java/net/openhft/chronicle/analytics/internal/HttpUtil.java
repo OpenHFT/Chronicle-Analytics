@@ -19,12 +19,10 @@ package net.openhft.chronicle.analytics.internal;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -97,5 +95,15 @@ public final class HttpUtil {
             }
         }
     }
+
+    static String urlEncode(@NotNull final String s, @NotNull final Consumer<String> errorLogger) {
+        try {
+            return URLEncoder.encode(s, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            errorLogger.accept(e.toString());
+            throw new InternalAnalyticsException("This should never happen as " + StandardCharsets.UTF_8.toString() + " should always be present.");
+        }
+    }
+
 
 }

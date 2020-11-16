@@ -49,4 +49,14 @@ final class HttpUtilTest {
         }
 
     }
+
+    @Test
+    void urlEncode() {
+        final List<String> logMessages = new ArrayList<>();
+        final String expected = "A+%25%40%26%5Ea";
+        final String actual = HttpUtil.urlEncode("A %@&^a", logMessages::add);
+        assertEquals(expected, actual);
+        assertTrue(logMessages.isEmpty());
+    }
+
 }

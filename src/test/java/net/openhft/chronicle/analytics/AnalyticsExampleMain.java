@@ -17,7 +17,7 @@
  */
 package net.openhft.chronicle.analytics;
 
-public class AnalyticsExample {
+public class AnalyticsExampleMain {
 
     public static void main(String[] args) {
 
