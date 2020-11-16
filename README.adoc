@@ -9,14 +9,14 @@ Per Minborg
 
 image:https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics/badge.svg[Maven Central,link=https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics]
 
-toc::[]
-
 This library provides remote ingress to Google Analytics 4, allowing usage-statistics to be collected for Java applications. The statistics can subsequently be analysed using
 a variety of tools available from Google and other providers.
 
+toc::[]
+
 == API Overview
 
-Applications will create and use instances of "Analytics". Analytic instances are created using a builder pattern that allow various custom parameters to be set:
+Applications will create and use instances of `Analytics`. Analytic instances are created using a builder pattern that optionally allows various custom parameters to be set, after which a new instance is created by invoking a `build()` method:
 
 [source, java]
 ----
@@ -32,11 +32,10 @@ Applications will create and use instances of "Analytics". Analytic instances ar
 
 NOTE: The `measurementId` and `apiSecret` values can be obtained directly from your Google Analytics account.
 
+== Example
+
 The following example sets up an analytics instance with the *event parameter* `app_version = 1.4.2` and perhaps the *user properties*
 `os_name = Linux`, `os_version = 4.18.0.147.2.1.2l8_1.x86_64` and `java_runtime_version = 1.8.0_272-b10` depending on the environment used:
-
-Once an Analytics
-
 
 [source, java]
 ----
