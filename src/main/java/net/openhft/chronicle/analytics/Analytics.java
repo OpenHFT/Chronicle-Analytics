@@ -162,6 +162,17 @@ public interface Analytics {
         Builder withClientIdFileName(@NotNull String clientIdFileName);
 
         /**
+         * Specifies a custom URL to use when connecting to Google Analytics.
+         * <p>
+         * By default, the URL "https://www.google-analytics.com/mp/collect"
+         * will be used.
+         *
+         * @param url used for remote connection
+         * @return this builder
+         */
+        Builder withUrl(@NotNull String url);
+
+        /**
          * Creates and returns a new Analytics instance for this Builder.
          *
          * @return a new Analytics instance for this Builder

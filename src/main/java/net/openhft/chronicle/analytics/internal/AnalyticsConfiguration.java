@@ -33,4 +33,5 @@ public interface AnalyticsConfiguration {
     long duration();
     @NotNull TimeUnit timeUnit();
     @NotNull String clientIdFileName();
+    @NotNull String url();
 }

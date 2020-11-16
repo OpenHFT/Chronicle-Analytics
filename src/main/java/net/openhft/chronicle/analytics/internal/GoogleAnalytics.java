@@ -31,8 +31,6 @@ import static net.openhft.chronicle.analytics.internal.JsonUtil.jsonElement;
 
 final class GoogleAnalytics implements Analytics {
 
-    private static final String ENDPOINT_URL = "https://www.google-analytics.com/mp/collect";
-
     private final AnalyticsConfiguration configuration;
     private final String clientId;
 
@@ -53,7 +51,7 @@ final class GoogleAnalytics implements Analytics {
     }
 
     private void httpSend(@NotNull String eventName, @NotNull final Map<String, String> eventParameters) {
-        final String url = ENDPOINT_URL + "?measurement_id=" + urlEncode(configuration.measurementId(), configuration.errorLogger()) + "&api_secret=" + urlEncode(configuration.apiSecret(), configuration.errorLogger());
+        final String url = configuration.url() + "?measurement_id=" + urlEncode(configuration.measurementId(), configuration.errorLogger()) + "&api_secret=" + urlEncode(configuration.apiSecret(), configuration.errorLogger());
         final String json = jsonFor(eventName, clientId, eventParameters, configuration.userProperties());
         HttpUtil.send(url, json, configuration.errorLogger(), configuration.debugLogger());
     }

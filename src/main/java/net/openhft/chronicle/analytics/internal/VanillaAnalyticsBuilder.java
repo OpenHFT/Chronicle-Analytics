@@ -39,6 +39,7 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     private long duration;
     private TimeUnit timeUnit = TimeUnit.SECONDS;
     private String clientIdFileName = Optional.ofNullable(System.getProperty("user.home")).orElse(".") + "/chronicle.analytics.client.id";
+    private String url = "https://www.google-analytics.com/mp/collect";
 
     public VanillaAnalyticsBuilder(@NotNull final String measurementId, @NotNull final String apiSecret) {
         this.measurementId = measurementId;
@@ -85,6 +86,12 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     @Override
     public Analytics.Builder withClientIdFileName(@NotNull final String clientIdFileName) {
         this.clientIdFileName = clientIdFileName;
+        return this;
+    }
+
+    @Override
+    public Analytics.Builder withUrl(@NotNull final String url) {
+        this.url = url;
         return this;
     }
 
@@ -145,5 +152,10 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     @Override
     public @NotNull String clientIdFileName() {
         return clientIdFileName;
+    }
+
+    @Override
+    public @NotNull String url() {
+        return url;
     }
 }

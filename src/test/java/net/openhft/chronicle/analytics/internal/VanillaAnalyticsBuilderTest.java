@@ -116,6 +116,12 @@ class VanillaAnalyticsBuilderTest {
         assertEquals(defaultFileName, newInstance().clientIdFileName());
     }
 
+    @Test
+    void url() {
+        final String defaultUrl = "https://www.google-analytics.com/mp/collect";
+        assertEquals(defaultUrl, newInstance().url());
+    }
+
     private VanillaAnalyticsBuilder newInstance() {
         return new VanillaAnalyticsBuilder(MEASUREMENT_ID, API_SECRET);
     }
