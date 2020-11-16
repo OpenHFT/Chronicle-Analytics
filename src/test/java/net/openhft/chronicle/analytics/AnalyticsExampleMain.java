@@ -39,7 +39,7 @@ public class AnalyticsExampleMain {
     private void showBuilder() {
         String measurementId = "G-TDAZG4CU3G";
         String apiSecret = "k2hL3x2dQaKq9F2gQ-PNhQ";
-        Analytics.Builder builder = Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ");
+        Analytics.Builder builder = Analytics.builder(measurementId, apiSecret);
 
         // optionally configure the builder, see JavaDocs
 
