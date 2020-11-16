@@ -1,13 +1,41 @@
 = Chronicle-Analytics
+Per Minborg
+
+:toc: macro
+:toclevels: 4
+:css-signature: demo
+:toc-placement: macro
+:toc-title:
 
 image:https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics/badge.svg[Maven Central,link=https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics]
 
-This library provides remote input access to Google Analytics 4 allowing usage statistics to be collected for Java applications.
+toc::[]
 
-== API
+This library provides remote ingress to Google Analytics 4, allowing usage-statistics to be collected for Java applications. The statistics can subsequently be analysed using
+a variety of tools available from Google and other providers.
+
+== API Overview
+
+Applications will create and use instances of "Analytics". Analytic instances are created using a builder pattern that allow various custom parameters to be set:
+
+[source, java]
+----
+        String measurementId = "G-TDAZG4CU3G";
+        String apiSecret = "k2hL3x2dQaKq9F2gQ-PNhQ";
+        Analytics.Builder builder = Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ");
+
+        // optionally configure the builder, see JavaDocs
+
+        Analytics analytics = builder.build();
+        analytics.sendEvent("started");
+----
+
+NOTE: The `measurementId` and `apiSecret` values can be obtained directly from your Google Analytics account.
 
 The following example sets up an analytics instance with the *event parameter* `app_version = 1.4.2` and perhaps the *user properties*
-`os_name = Linux` and `java_runtime_version = 1.8.0_272-b10` depending on the environment used:
+`os_name = Linux`, `os_version = 4.18.0.147.2.1.2l8_1.x86_64` and `java_runtime_version = 1.8.0_272-b10` depending on the environment used:
+
+Once an Analytics
 
 
 [source, java]
@@ -33,11 +61,11 @@ public class AnalyticsExampleMain {
 }
 ----
 
-When applications like this one are run, statistics will be gathered by Google Analytics 4 allowing detailed insight as to how, where and when the application is used.
+When applications like this are run, statistics will be gathered by Google Analytics 4 allowing detailed insight as to how, where and when the application is used.
 
 == Google Analytics 4 example
 
-Here is an example of how the data above could be rendered using Google Analytics 4.
+Here is an example of how data could be rendered using Google Analytics 4.
 
 image::docs/images/GA4_example.png[Google Analytics 4 Example]
 
@@ -45,9 +73,9 @@ image::docs/images/GA4_example.png[Google Analytics 4 Example]
 
 The library does not have any transitive dependencies and depends directly only on `org.jetbrains:annotations`.
 
-== Json compliance
+== JSON compliance
 
-The library supports basic Json functionality. Escaping works for the most common characters used in the English language. To keep the dependency graph simple, we did not depend on an external JSON library.
+The library supports basic JSON functionality. Escaping works for the most common characters used in the English language. To keep the dependency graph simple, we did not depend on any external JSON library.
 
 == Thread usage
 

@@ -35,4 +35,17 @@ public class AnalyticsExampleMain {
         analytics.sendEvent("completed");
 
     }
+
+    private void showBuilder() {
+        String measurementId = "G-TDAZG4CU3G";
+        String apiSecret = "k2hL3x2dQaKq9F2gQ-PNhQ";
+        Analytics.Builder builder = Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ");
+
+        // optionally configure the builder, see JavaDocs
+
+        Analytics analytics = builder.build();
+        analytics.sendEvent("started");
+
+    }
+
 }
