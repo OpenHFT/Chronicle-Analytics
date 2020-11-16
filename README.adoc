@@ -38,11 +38,11 @@ NOTE: The `measurementId` and `apiSecret` values can be obtained directly from y
 
 == Builder configuration
 
-Configuration of the builder includes the following:
+Configuration of the builder may be done using the following methods:
 
 .Builder Methods
 |===
-| Modifier and Type | Method | Description
+| Return type | Method | Description
 
 |Analytics |build()|Creates and returns a new Analytics instance for this Builder.
 |Builder   |putEventParameter​(String key, String value)|Associates the provided value with the provided key in this builder's event parameters.
@@ -55,9 +55,27 @@ Configuration of the builder includes the following:
 |Builder   |withUrl​(String url)|Specifies a custom URL to use when connecting to Google Analytics.
 |===
 
-NOTE: All parameters and returns values are non-null.
+NOTE: All parameters and return values are non-null.
 
-NOTE: See the link:https://www.javadoc.io/doc/net.openhft/chronicle-analytics[JavaDocs] for more details on the methods above.
+NOTE: See the link:https://javadoc.io/doc/net.openhft/chronicle-analytics/latest/index.html[JavaDocs] for more details on the methods above.
+
+== Analytic methods
+
+Once we have obtained an Analytic instance, we can send events up stream to Google using the following methods:
+
+.Analytics Methods
+|===
+| Return type | Method | Description
+
+|void|sendEvent​(String name)|Sends an event to Google Analytics as identified by the provided event `name`).
+|void|sendEvent​(String name, Map<String,​String> additionalEventParameters)|Sends an event to Google Analytics as identified by the provided event `name`, including the provided `additionalEventParameters` in the event.
+|===
+
+NOTE: All parameters are non-null.
+
+NOTE: See the link:https://javadoc.io/doc/net.openhft/chronicle-analytics/latest/index.html[JavaDocs] for more details on the methods above.
+
+
 
 == Application example
 
