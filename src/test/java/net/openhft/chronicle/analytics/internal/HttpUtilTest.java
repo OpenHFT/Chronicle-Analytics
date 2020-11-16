@@ -9,14 +9,14 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
 
 final class HttpUtilTest {
 
-    private static final String TEST_RESPONSE = "I am here!";
+    private static final String TEST_RESPONSE = "I am here!\n" +
+            "And I am also here\n";
 
     private List<String> debugResponses = new ArrayList<>();
     private List<String> errorResponses = new ArrayList<>();
@@ -43,7 +43,7 @@ final class HttpUtilTest {
             sender.run();
 
             assertTrue(errorResponses.isEmpty());
-            assertEquals(singletonList(TEST_RESPONSE), debugResponses);
+            assertEquals(singletonList(TEST_RESPONSE.replaceAll("\\s+", " ").trim()), debugResponses);
         } finally {
             server.shutdown();
         }
