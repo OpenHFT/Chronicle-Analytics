@@ -42,6 +42,11 @@ class VanillaAnalyticsBuilderTest {
     }
 
     @Test
+    void withFrequencyLimit2() {
+        assertNotNull(newInstance().withFrequencyLimit(1, TimeUnit.SECONDS));
+    }
+
+    @Test
     void withErrorLogger() {
         assertSame(TEST_LOGGER, ((VanillaAnalyticsBuilder) newInstance().withErrorLogger(TEST_LOGGER)).errorLogger());
     }
