@@ -67,7 +67,7 @@ Once we have obtained an Analytic instance, we can send events up stream to Goog
 |===
 | Return type | Method | Description
 
-|void|sendEvent​(String name)|Sends an event to Google Analytics as identified by the provided event `name`).
+|void|sendEvent​(String name)|Sends an event to Google Analytics as identified by the provided event `name`.
 |void|sendEvent​(String name, Map<String,​String> additionalEventParameters)|Sends an event to Google Analytics as identified by the provided event `name`, including the provided `additionalEventParameters` in the event.
 |===
 
