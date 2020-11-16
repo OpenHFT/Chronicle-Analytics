@@ -78,6 +78,10 @@ The library does not have any transitive dependencies and depends directly only 
 
 The library supports basic JSON functionality. Escaping works for the most common characters used in the English language. To keep the dependency graph simple, we did not depend on any external JSON library.
 
+== Thread safety
+
+Analytics instances are thread-safe and can be shared across threads.
+
 == Thread usage
 
 The library is using a single thread named `"analytics-http-client"` to send requests. This thread is initially started on demand and will remain dormant throughout the lifespan of the JVM.
