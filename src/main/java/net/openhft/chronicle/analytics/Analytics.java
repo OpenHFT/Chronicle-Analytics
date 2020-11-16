@@ -118,7 +118,6 @@ public interface Analytics {
         @NotNull
         Builder withFrequencyLimit(long duration, @NotNull TimeUnit timeUnit);
 
-
         /**
          * Specifies a custom logger that will receive error messages.
          * For example, failed HTTP communications.
@@ -132,6 +131,7 @@ public interface Analytics {
          * @param errorLogger to use for error messages.
          * @return this builder
          */
+        @NotNull
         Builder withErrorLogger(@NotNull Consumer<String> errorLogger);
 
         /**
@@ -147,6 +147,7 @@ public interface Analytics {
          * @param debugLogger to use for debug messages.
          * @return this builder
          */
+        @NotNull
         Builder withDebugLogger(@NotNull Consumer<String> debugLogger);
 
         /**
@@ -159,6 +160,7 @@ public interface Analytics {
          * @param clientIdFileName used to store the persistent client id.
          * @return this builder
          */
+        @NotNull
         Builder withClientIdFileName(@NotNull String clientIdFileName);
 
         /**
@@ -170,6 +172,7 @@ public interface Analytics {
          * @param url used for remote connection
          * @return this builder
          */
+        @NotNull
         Builder withUrl(@NotNull String url);
 
         /**
@@ -182,6 +185,7 @@ public interface Analytics {
          *
          * @return this builder
          */
+        @NotNull
         Builder withReportDespiteJUnit();
 
         /**
