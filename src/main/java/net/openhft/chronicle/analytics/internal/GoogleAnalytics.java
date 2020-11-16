@@ -21,6 +21,7 @@ import net.openhft.chronicle.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -33,6 +34,7 @@ final class GoogleAnalytics implements Analytics {
 
     private final AnalyticsConfiguration configuration;
     private final String clientId;
+    private final AtomicLong lastSendAttemptNs = new AtomicLong();
 
     GoogleAnalytics(@NotNull final AnalyticsConfiguration configuration) {
         this.configuration = configuration;
@@ -41,6 +43,15 @@ final class GoogleAnalytics implements Analytics {
 
     @Override
     public void sendEvent(@NotNull final String name, @NotNull final Map<String, String> additionalEventParameters) {
+        if (configuration.duration() > 0) {
+            final long nextThresholdNs = lastSendAttemptNs.get() + configuration.timeUnit().toNanos(configuration.duration());
+            if (System.nanoTime() < nextThresholdNs)
+                // Drop this send event because it was too
+                // close to the previous send attempt not dropped
+                return;
+        }
+        lastSendAttemptNs.set(System.nanoTime());
+
         if (additionalEventParameters.isEmpty()) {
             httpSend(name, configuration.eventParameters());
         } else {
