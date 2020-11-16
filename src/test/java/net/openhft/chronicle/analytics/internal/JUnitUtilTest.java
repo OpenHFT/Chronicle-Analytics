@@ -10,4 +10,15 @@ final class JUnitUtilTest {
     void isJUnitAvailable() {
         assertTrue(JUnitUtil.isJUnitAvailable());
     }
+
+    @Test
+    void isClassAvailableString() {
+            assertTrue(JUnitUtil.isClassAvailable(String.class.getName()));
+    }
+
+    @Test
+    void isClassAvailableInventedName() {
+        assertFalse(JUnitUtil.isClassAvailable("VeryUnliKELyNameToBeAnExisTINgClazz"));
+    }
+
 }

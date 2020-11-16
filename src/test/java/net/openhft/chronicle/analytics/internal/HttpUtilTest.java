@@ -51,6 +51,14 @@ final class HttpUtilTest {
     }
 
     @Test
+    void sendIllegalURL() {
+        final HttpUtil.Sender sender = new HttpUtil.Sender("sdjkbhh131921gavsbjaj1j11jg1gvaskaj", "{}", errorResponses::add, debugResponses::add);
+        sender.run();
+        assertFalse(errorResponses.isEmpty());
+        assertTrue(debugResponses.isEmpty());
+    }
+
+    @Test
     void urlEncode() {
         final List<String> logMessages = new ArrayList<>();
         final String expected = "A+%25%40%26%5Ea";
