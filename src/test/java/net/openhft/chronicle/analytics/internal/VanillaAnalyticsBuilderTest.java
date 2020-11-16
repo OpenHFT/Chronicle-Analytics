@@ -126,8 +126,4 @@ class VanillaAnalyticsBuilderTest {
         return new VanillaAnalyticsBuilder(MEASUREMENT_ID, API_SECRET);
     }
 
-    private void assertDefaultNotNull(@NotNull final Function<? super AnalyticsConfiguration, Object> getter) {
-        assertNotNull(getter.apply(newInstance()));
-    }
-
 }
