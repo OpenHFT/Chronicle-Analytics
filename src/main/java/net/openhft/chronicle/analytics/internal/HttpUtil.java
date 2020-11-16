@@ -30,8 +30,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-public enum HttpUtil {
-    ;
+public final class HttpUtil {
+
+    private HttpUtil() {}
 
     private static final String THREAD_NAME = "analytics-http-client";
 

@@ -105,7 +105,7 @@ final class GoogleAnalytics implements Analytics {
             return URLEncoder.encode(s, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
             configuration.errorLogger().accept(e.toString());
-            throw new RuntimeException();
+            throw new InternalAnalyticsException("This should never happen as " + StandardCharsets.UTF_8.toString() + " should always be present.");
         }
     }
 
@@ -121,29 +121,27 @@ final class GoogleAnalytics implements Analytics {
     private String acquireClientId() {
         final Path path = Paths.get(configuration.clientIdFileName());
         try {
-            return Files.lines(path, StandardCharsets.UTF_8)
-                    .findFirst()
-                    .map(UUID::fromString)
-                    .orElseThrow(NoSuchElementException::new)
-                    .toString();
+            try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
+                return lines
+                        .findFirst()
+                        .map(UUID::fromString)
+                        .orElseThrow(NoSuchElementException::new)
+                        .toString();
+            }
         } catch (Exception ignore) {
             configuration.debugLogger().accept("Client id file not present: " + path.toAbsolutePath().toString());
         }
-        final String clientId = UUID.randomUUID().toString();
+        final String id = UUID.randomUUID().toString();
         try {
-            Files.write(path, clientId.getBytes(StandardCharsets.UTF_8));
+            Files.write(path, id.getBytes(StandardCharsets.UTF_8));
         } catch (IOException ignore) {
             configuration.debugLogger().accept("Unable to create client id file: " + path.toAbsolutePath().toString());
         }
-        return clientId;
+        return id;
     }
 
     private String nl() {
         return String.format("%n");
-    }
-
-    private static String replaceDotsWithUnderscore(@NotNull final String s) {
-        return s.replace('.', '_');
     }
 
 }
