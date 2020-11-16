@@ -24,6 +24,7 @@ public class AnalyticsExampleMain {
         Analytics analytics = Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ")
                 .putEventParameter("app_version", "1.4.2")
                 .putUserProperty("os_name", System.getProperty("os.name"))
+                .putUserProperty("os_version", System.getProperty("os.version"))
                 .putUserProperty("java_runtime_version", System.getProperty("java.runtime.version"))
                 .build();
 
