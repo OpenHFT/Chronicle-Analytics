@@ -40,6 +40,14 @@ Here is an example of how the data above could be rendered using Google Analytic
 
 image::docs/images/GA4_example.png[Google Analytics 4 Example]
 
+== External dependencies
+
+The library does not have any transitive dependencies and depends directly only on `org.jetbrains:annotations`.
+
+== Json compliance
+
+The library supports basic Json functionality. Escaping works for the most common characters used in the English language. To keep the dependency graph simple, we did not depend on an external JSON library.
+
 == Thread usage
 
 The library is using a single thread named `"analytics-http-client"` to send requests. This thread is initially started on demand and will remain dormant throughout the lifespan of the JVM.
