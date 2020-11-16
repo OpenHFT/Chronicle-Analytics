@@ -8,5 +8,7 @@ import java.util.Map;
 final class MuteAnalytics implements Analytics {
 
     @Override
-    public void sendEvent(@NotNull String name, @NotNull Map<String, String> additionalEventParameters) {}
+    public void sendEvent(@NotNull String name, @NotNull Map<String, String> additionalEventParameters) {
+        // Do nothing because this is a mute instance.
+    }
 }

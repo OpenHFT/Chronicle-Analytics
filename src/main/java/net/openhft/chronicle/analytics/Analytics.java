@@ -38,7 +38,7 @@ import java.util.function.Consumer;
 public interface Analytics {
 
     /**
-     * Sends an event to Google Analytics as identified by the provided event {@code name)}.
+     * Sends an event to Google Analytics as identified by the provided event {@code name}.
      * <p>
      * Depending on settings and other conditions, the event may or may not be
      * sent upstream. For example, some implementations may
@@ -49,7 +49,7 @@ public interface Analytics {
     }
 
     /**
-     * Sends an event to Google Analytics as identified by the provided event {@code name)} including
+     * Sends an event to Google Analytics as identified by the provided event {@code name} including
      * the provided {@code additionalEventParameters} in the event.
      * <p>
      * Depending on settings and other conditions, the event may or may not be

@@ -13,7 +13,7 @@ final class JUnitUtil {
                 .anyMatch(JUnitUtil::isClassAvailable);
     }
 
-    private static boolean isClassAvailable(@NotNull final String className) {
+    static boolean isClassAvailable(@NotNull final String className) {
         try {
             Class.forName(className);
         } catch (ClassNotFoundException ignore) {

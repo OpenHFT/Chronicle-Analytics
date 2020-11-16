@@ -74,31 +74,31 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     }
 
     @Override
-    public Analytics.Builder withErrorLogger(@NotNull final Consumer<String> errorLogger) {
+    public Analytics.@NotNull Builder withErrorLogger(@NotNull final Consumer<String> errorLogger) {
         this.errorLogger = errorLogger;
         return this;
     }
 
     @Override
-    public Analytics.Builder withDebugLogger(@NotNull final Consumer<String> debugLogger) {
+    public Analytics.@NotNull Builder withDebugLogger(@NotNull final Consumer<String> debugLogger) {
         this.debugLogger = debugLogger;
         return this;
     }
 
     @Override
-    public Analytics.Builder withClientIdFileName(@NotNull final String clientIdFileName) {
+    public Analytics.@NotNull Builder withClientIdFileName(@NotNull final String clientIdFileName) {
         this.clientIdFileName = clientIdFileName;
         return this;
     }
 
     @Override
-    public Analytics.Builder withUrl(@NotNull final String url) {
+    public Analytics.@NotNull Builder withUrl(@NotNull final String url) {
         this.url = url;
         return this;
     }
 
     @Override
-    public Analytics.Builder withReportDespiteJUnit() {
+    public Analytics.@NotNull Builder withReportDespiteJUnit() {
         this.reportDespiteJUnit = true;
         return this;
     }
