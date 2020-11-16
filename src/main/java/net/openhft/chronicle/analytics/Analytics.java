@@ -173,6 +173,18 @@ public interface Analytics {
         Builder withUrl(@NotNull String url);
 
         /**
+         * Specifies that reporting shall be made even though
+         * JUnit test classes are available to the classloader.
+         * <p>
+         * By default, no reporting will be done if either of the classes
+         * `org.junit.jupiter.api.Test` or `org.junit.Test` are available
+         * to the classloader.
+         *
+         * @return this builder
+         */
+        Builder withReportDespiteJUnit();
+
+        /**
          * Creates and returns a new Analytics instance for this Builder.
          *
          * @return a new Analytics instance for this Builder

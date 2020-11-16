@@ -57,6 +57,16 @@ class VanillaAnalyticsBuilderTest {
     }
 
     @Test
+    void withReportDespiteJUnit() {
+        assertNotNull(newInstance().withReportDespiteJUnit());
+    }
+
+    @Test
+    void withUrl() {
+        assertEquals(TEST_STRING0, ((VanillaAnalyticsBuilder) newInstance().withUrl(TEST_STRING0)).url());
+    }
+
+    @Test
     void build() {
         assertNotNull(newInstance().build());
 

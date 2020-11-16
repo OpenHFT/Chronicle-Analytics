@@ -35,11 +35,13 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     private final Map<String, String> userProperties = new LinkedHashMap<>();
     private final Map<String, String> eventParameters = new LinkedHashMap<>();
     private Consumer<String> errorLogger = System.err::println;
-    private Consumer<String> debugLogger = s -> {};
+    private Consumer<String> debugLogger = s -> {
+    };
     private long duration;
     private TimeUnit timeUnit = TimeUnit.SECONDS;
     private String clientIdFileName = Optional.ofNullable(System.getProperty("user.home")).orElse(".") + "/chronicle.analytics.client.id";
     private String url = "https://www.google-analytics.com/mp/collect";
+    private boolean reportDespiteJUnit;
 
     public VanillaAnalyticsBuilder(@NotNull final String measurementId, @NotNull final String apiSecret) {
         this.measurementId = measurementId;
@@ -95,6 +97,12 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
         return this;
     }
 
+    @Override
+    public Analytics.Builder withReportDespiteJUnit() {
+        this.reportDespiteJUnit = true;
+        return this;
+    }
+
     @NotNull
     @Override
     public Analytics build() {
@@ -102,7 +110,11 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
             // This protects from modifying the builder after it has been used to build a new object.
             throw new IllegalStateException("This builder has already been used.");
         built = true;
-        return new GoogleAnalytics(this);
+
+        if (JUnitUtil.isJUnitAvailable() && !reportDespiteJUnit)
+            return new MuteAnalytics();
+        else
+            return new GoogleAnalytics(this);
     }
 
     // Accessors
