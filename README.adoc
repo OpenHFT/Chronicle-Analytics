@@ -75,8 +75,6 @@ NOTE: All parameters are non-null.
 
 NOTE: See the link:https://javadoc.io/doc/net.openhft/chronicle-analytics/latest/index.html[JavaDocs] for more details on the methods above.
 
-
-
 == Application example
 
 The following example sets up an analytics instance with the *event parameter* `app_version = 1.4.2` and perhaps the *user properties*
