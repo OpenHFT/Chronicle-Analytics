@@ -62,7 +62,7 @@ public class AnalyticsExampleMain {
 }
 ----
 
-When applications like this are run, statistics will be gathered by Google Analytics 4 allowing detailed insight as to how, where and when the application is used.
+When applications like this are run, statistics will be gathered by Google Analytics 4 allowing detailed insights as to how, where and when the application is used.
 
 == Google Analytics 4 example
 
@@ -84,7 +84,7 @@ Analytics instances are thread-safe and can be shared across threads.
 
 == Thread usage
 
-The library is using a single thread named `"analytics-http-client"` to send requests. This thread is initially started on demand and will remain dormant throughout the lifespan of the JVM.
+The library is using a single thread named `"chronicle-analytics-http-client"` to send requests. This thread is initially started on demand and will remain dormant throughout the lifespan of the JVM.
 
 
 

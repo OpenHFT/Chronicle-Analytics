@@ -28,12 +28,12 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-public final class HttpUtil {
+final class HttpUtil {
 
     private HttpUtil() {
     }
 
-    private static final String THREAD_NAME = "analytics-http-client";
+    private static final String THREAD_NAME = "chronicle-analytics-http-client";
 
     private static final Executor EXECUTOR = Executors.newSingleThreadExecutor(runnable -> {
         final Thread thread = new Thread(runnable, THREAD_NAME);
