@@ -1,5 +1,6 @@
 package net.openhft.chronicle.analytics.internal;
 
+import net.openhft.chronicle.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +35,9 @@ class VanillaAnalyticsBuilderTest {
 
     @Test
     void withFrequencyLimit() {
+        final Analytics.Builder builder = newInstance();
         assertThrows(IllegalArgumentException.class, () ->
-                newInstance().withFrequencyLimit(-1, TimeUnit.SECONDS)
+                builder.withFrequencyLimit(-1, TimeUnit.SECONDS)
         );
     }
 
@@ -57,12 +59,11 @@ class VanillaAnalyticsBuilderTest {
     @Test
     void build() {
         assertNotNull(newInstance().build());
-        assertThrows(IllegalStateException.class, () -> {
-            final VanillaAnalyticsBuilder builder = newInstance();
-            builder.build();
-            // should fail!
-            builder.build();
-        });
+
+        final Analytics.Builder builder = newInstance();
+        builder.build();
+        // should fail the second time
+        assertThrows(IllegalStateException.class, builder::build);
     }
 
     @Test
