@@ -32,7 +32,8 @@ import java.util.function.Consumer;
 
 public final class HttpUtil {
 
-    private HttpUtil() {}
+    private HttpUtil() {
+    }
 
     private static final String THREAD_NAME = "analytics-http-client";
 
@@ -49,17 +50,17 @@ public final class HttpUtil {
         EXECUTOR.execute(new Sender(urlString, json, errorLogger, debugLogger));
     }
 
-    private static final class Sender implements Runnable {
+    static final class Sender implements Runnable {
 
         private final String urlString;
         private final String json;
         private final Consumer<String> errorLogger;
         private final Consumer<String> debugLogger;
 
-        public Sender(@NotNull final String urlString,
-                      @NotNull final String json,
-                      @NotNull final Consumer<String> errorLogger,
-                      @NotNull final Consumer<String> debugLogger) {
+        Sender(@NotNull final String urlString,
+               @NotNull final String json,
+               @NotNull final Consumer<String> errorLogger,
+               @NotNull final Consumer<String> debugLogger) {
             this.urlString = urlString;
             this.json = json;
             this.errorLogger = errorLogger;
