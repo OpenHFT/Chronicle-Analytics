@@ -58,6 +58,15 @@ public interface Analytics {
      */
     void sendEvent(@NotNull String name, @NotNull Map<String, String> additionalEventParameters);
 
+    /**
+     * Creates and returns a new Builder that can be used to create an Analytic instance.
+     * <p>
+     * The builder can only create one single Analytic instance.
+     *
+     * @param measurementId to use for reporting
+     * @param apiSecret to use for reporting
+     * @return a new Builder that can be used to create an Analytic instance
+     */
     @NotNull
     static Builder builder(@NotNull final String measurementId, @NotNull final String apiSecret) {
         return new VanillaAnalyticsBuilder(measurementId, apiSecret);
