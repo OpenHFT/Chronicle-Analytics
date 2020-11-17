@@ -48,4 +48,12 @@ public class AnalyticsExampleMain {
 
     }
 
+    private void shortExample() {
+        Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ")
+                .putEventParameter("app_version", "1.4.2")
+                .build()
+                .sendEvent("started");
+    }
+
+
 }

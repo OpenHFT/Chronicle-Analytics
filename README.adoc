@@ -12,10 +12,18 @@ image:https://javadoc-badge.appspot.com/net.openhft/chronicle-analytics.svg?labe
 image:https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000[License, link=https://github.com/OpenHFT/Chronicle-Analytics/blob/master/LICENSE]
 
 This library provides remote ingress to Google Analytics 4, allowing usage-statistics to be collected for Java applications. The statistics can subsequently be analysed using
-a variety of tools available from Google and other providers.
+a variety of tools available from Google and other providers. Here is a short demo of how to use the library to send a Google Analytics event named "started"
+also containing the application's version `app_version`:
+
+[source, java]
+----
+Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ")
+    .putEventParameter("app_version", "1.4.2")
+    .build()
+    .sendEvent("started");
+----
 
 toc::[]
-
 
 == Using the library
 
@@ -27,14 +35,14 @@ Applications will create and use instances of `Analytics`. Analytic instances ar
 
 [source, java]
 ----
-        String measurementId = "G-TDAZG4CU3G";
-        String apiSecret = "k2hL3x2dQaKq9F2gQ-PNhQ";
-        Analytics.Builder builder = Analytics.builder(measurementId, apiSecret);
+String measurementId = "G-TDAZG4CU3G";
+String apiSecret = "k2hL3x2dQaKq9F2gQ-PNhQ";
+Analytics.Builder builder = Analytics.builder(measurementId, apiSecret);
 
-        // optionally configure the builder, see JavaDocs
+// optionally configure the builder, see JavaDocs
 
-        Analytics analytics = builder.build();
-        analytics.sendEvent("started");
+Analytics analytics = builder.build();
+analytics.sendEvent("started");
 ----
 
 NOTE: The `measurementId` and `apiSecret` values can be obtained directly from your Google Analytics account.
@@ -139,6 +147,3 @@ Analytics instances are thread-safe and can be shared across threads.
 === Thread usage
 
 The library is using a single thread named `"chronicle-analytics-http-client"` to send requests. This thread is initially started on demand and will remain dormant throughout the lifespan of the JVM.
-
-
-
