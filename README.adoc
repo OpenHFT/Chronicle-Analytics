@@ -13,16 +13,21 @@ image:https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000[License, link=https
 image:https://img.shields.io/gitter/room/OpenHFT/Lobby.svg?style=popout[link="https://gitter.im/OpenHFT/Lobby"]
 
 This library provides remote ingress to Google Analytics 4, allowing data, such as usage-statistics, to be collected for Java applications. The data can subsequently be analysed using
-a variety of tools available from Google and other providers. Here is a short Java snippet showing how one could use the library to send a Google Analytics event named "started"
-also associated with the application's version number under the event parameter name "app_version`:
+a variety of tools available from Google and other providers.
+
+Here is a short Java snippet showing how one could use the library to send a Google Analytics event
+for the measurement id "G-TDAZG4CU3G" using the api secret "k2hL3x2dQaKq9F2gQ-PNhQ".
+
 
 [source, java]
 ----
-Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ")
+Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ") // measurementId, apiSecret
     .putEventParameter("app_version", "1.4.2")
     .build()
     .sendEvent("started");
 ----
+
+As can be seen, the event is named "started" and is associated with the application's version number under the event parameter name "app_version`.
 
 toc::[]
 
