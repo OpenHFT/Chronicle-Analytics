@@ -68,6 +68,8 @@ Configuration of the builder may be done using the following methods:
 
 NOTE: All parameters and return values are non-null.
 
+NOTE: Invoking `withUrl("https://www.google-analytics.com/debug/mp/collect")` allows debugging of your application reporting on the server side.
+
 NOTE: See the link:https://javadoc.io/doc/net.openhft/chronicle-analytics/latest/index.html[JavaDocs] for more details on the methods above.
 
 === Analytic methods
