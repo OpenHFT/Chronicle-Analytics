@@ -27,7 +27,7 @@
     </parent>
 
     <artifactId>chronicle-analytics</artifactId>
-    <version>EMPTY</version>
+    <version>EMPTY-SNAPSHOT</version>
     <name>OpenHFT/Chronicle-Analytics</name>
     <description>Chronicle-Analytics</description>
     <packaging>bundle</packaging>
