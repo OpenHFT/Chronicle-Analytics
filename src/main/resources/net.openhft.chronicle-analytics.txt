@@ -1,0 +1,1 @@
+This is an empty shell placeholder artifact for `net.openhft:chronicle-analytics`.

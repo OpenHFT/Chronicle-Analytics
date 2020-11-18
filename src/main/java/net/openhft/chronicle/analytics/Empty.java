@@ -15,6 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-module chronicle.analytics {
-    exports net.openhft.chronicle.analytics;
-}
+package net.openhft.chronicle.analytics;
+
+/**
+ * Empty placeholder class for the empty shell analytics version.
+ */
+public interface Empty {}
