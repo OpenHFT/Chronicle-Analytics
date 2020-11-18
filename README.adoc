@@ -1,4 +1,157 @@
 = Chronicle-Analytics
 Per Minborg
 
-This branch contains an empty shell placeholder artifact for `net.openhft:chronicle-analytics`.
+:toc:
+:toclevels: 4
+:css-signature: demo
+:toc-placement: macro
+:toc-title: Table of contents
+
+image:https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics/badge.svg[Maven Central,link=https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics]
+image:https://javadoc-badge.appspot.com/net.openhft/chronicle-analytics.svg?label=javadoc[JavaDoc, link=https://www.javadoc.io/doc/net.openhft/chronicle-analytics]
+image:https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000[License, link=https://github.com/OpenHFT/Chronicle-Analytics/blob/master/LICENSE]
+image:https://img.shields.io/gitter/room/OpenHFT/Lobby.svg?style=popout[link="https://gitter.im/OpenHFT/Lobby"]
+
+This library provides remote ingress to Google Analytics 4, allowing data, such as usage-statistics, to be collected for Java applications. The data can subsequently be analysed using
+a variety of tools available from Google and other providers.
+
+Here is a short Java snippet showing how one could use the library to send a Google Analytics event
+for the measurement id "G-TDAZG4CU3G" using the api secret "k2hL3x2dQaKq9F2gQ-PNhQ".
+
+
+[source, java]
+----
+Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ") // measurementId, apiSecret
+    .putEventParameter("app_version", "1.4.2")
+    .build()
+    .sendEvent("started");
+----
+
+As can be seen, the event is named "started" and is associated with the application's version number under the event parameter name "app_version`.
+
+toc::[]
+
+== Using the library
+
+The library and its use is further described hereunder.
+
+=== API overview
+
+Applications will create and use instances of `Analytics`. Analytic instances are created using a builder pattern that optionally allows various custom parameters to be set, after which a new instance is created by invoking a `build()` method:
+
+[source, java]
+----
+String measurementId = "G-TDAZG4CU3G";
+String apiSecret = "k2hL3x2dQaKq9F2gQ-PNhQ";
+Analytics.Builder builder = Analytics.builder(measurementId, apiSecret);
+
+// optionally configure the builder, see JavaDocs
+
+Analytics analytics = builder.build();
+analytics.sendEvent("started");
+----
+
+NOTE: The `measurementId` and `apiSecret` values can be obtained directly from your Google Analytics account.
+
+=== Builder configuration
+
+Configuration of the builder may be done using the following methods:
+
+.Builder Methods
+|===
+| Return type | Method | Description
+
+|Analytics |build()|Creates and returns a new Analytics instance for this Builder.
+|Builder   |putEventParameter​(String key, String value)|Associates the provided value with the provided key in this builder's event parameters.
+|Builder   |putUserProperty​(String key, String value)|Associates the provided value with the provided key in this builder's user properties.
+|Builder   |withClientIdFileName​(String clientIdFileName)|Specifies a custom file name to use when storing a persistent client id used to identify returning users.
+|Builder   |withDebugLogger​(Consumer<String> debugLogger)|Specifies a custom logger that will receive debug messages.
+|Builder   |withErrorLogger​(Consumer<String> errorLogger)|Specifies a custom logger that will receive error messages.
+|Builder   |withFrequencyLimit​(long duration, TimeUnit timeUnit)|Limits the frequency by which events can be sent upstream to Google Analytics.
+|Builder   |withReportDespiteJUnit()|Specifies that reporting shall be made even though JUnit test classes are available to the classloader.
+|Builder   |withUrl​(String url)|Specifies a custom URL to use when connecting to Google Analytics.
+|===
+
+NOTE: All parameters and return values are non-null.
+
+NOTE: Invoking `withUrl("https://www.google-analytics.com/debug/mp/collect")` allows debugging of your application reporting on the server side.
+
+NOTE: See the link:https://javadoc.io/doc/net.openhft/chronicle-analytics/latest/index.html[JavaDocs] for more details on the methods above.
+
+=== Analytic methods
+
+Once we have obtained an Analytic instance, we can send events up stream to Google using the following methods:
+
+.Analytics Methods
+|===
+| Return type | Method | Description
+
+|void|sendEvent​(String name)|Sends an event to Google Analytics as identified by the provided event `name`.
+|void|sendEvent​(String name, Map<String,​String> additionalEventParameters)|Sends an event to Google Analytics as identified by the provided event `name`, including the provided `additionalEventParameters` in the event.
+|===
+
+NOTE: All parameters are non-null.
+
+NOTE: See the link:https://javadoc.io/doc/net.openhft/chronicle-analytics/latest/index.html[JavaDocs] for more details on the methods above.
+
+=== Application example
+
+The following example sets up an analytics instance with the *event parameter* `app_version = 1.4.2` and perhaps the *user properties*
+`os_name = Linux`, `os_version = 4.18.0.147.2.1.2l8_1.x86_64` and `java_runtime_version = 1.8.0_272-b10` depending on the environment used:
+
+[source, java]
+----
+public class AnalyticsExampleMain {
+
+    public static void main(String[] args) {
+
+        Analytics analytics = Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ")
+                .putEventParameter("app_version", "1.4.2")
+                .putUserProperty("os_name", System.getProperty("os.name"))
+                .putUserProperty("os_version", System.getProperty("os.version"))
+                .putUserProperty("java_runtime_version", System.getProperty("java.runtime.version"))
+                .build();
+
+        analytics.sendEvent("started");
+
+        // do some job
+
+        analytics.sendEvent("completed");
+
+    }
+}
+----
+
+When applications like this are run, statistics will be gathered by Google Analytics 4 allowing detailed insights as to how, where and when the application is used.
+
+== Google Analytics 4
+
+Google Analytics provides many ways of analysing the uploaded data.
+
+=== Example
+
+Here is an example of how data could be rendered using Google Analytics 4.
+
+image::docs/images/GA4_example.png[Google Analytics 4 Example]
+
+== Requirements and properties
+
+=== Java versions
+
+This library requires Java 8 or later.
+
+=== External dependencies
+
+The library does not have any transitive dependencies and depends directly only on `org.jetbrains:annotations`.
+
+=== JSON compliance
+
+The library supports basic JSON functionality. Escaping works for the most common characters used in the English language. To keep the dependency graph simple, we did not depend on any external JSON library.
+
+=== Thread safety
+
+Analytics instances are thread-safe and can be shared across threads.
+
+=== Thread usage
+
+The library is using a single thread named `"chronicle-analytics-http-client"` to send requests. This thread is initially started on demand and will remain dormant throughout the lifespan of the JVM.
