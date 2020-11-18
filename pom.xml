@@ -27,7 +27,7 @@
     </parent>
 
     <artifactId>chronicle-analytics</artifactId>
-    <version>2.20.2.EMPTY</version>
+    <versio>EMPTY</version>
     <name>OpenHFT/Chronicle-Analytics</name>
     <description>Chronicle-Analytics</description>
     <packaging>bundle</packaging>
@@ -40,11 +40,6 @@
                 <type>pom</type>
                 <version>3.19.4</version>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>net.openhft</groupId>
-                <artifactId>affinity</artifactId>
-                <version>3.20.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
