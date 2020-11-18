@@ -155,3 +155,7 @@ Analytics instances are thread-safe and can be shared across threads.
 === Thread usage
 
 The library is using a single thread named `"chronicle-analytics-http-client"` to send requests. This thread is initially started on demand and will remain dormant throughout the lifespan of the JVM.
+
+=== Special empty version
+
+There is a special empty artifact available with the version number `0.EMPTY`. This version can be used to remove analytics code from projects that depends on analytics.
