@@ -119,7 +119,11 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
         if (JUnitUtil.isJUnitAvailable() && !reportDespiteJUnit)
             return MuteAnalytics.INSTANCE;
         else
-            return new GoogleAnalytics(this);
+            if (measurementId.startsWith("UA-")) {
+                return new GoogleAnalytics3(this);
+            } else {
+                return new GoogleAnalytics4(this);
+            }
     }
 
     // Accessors

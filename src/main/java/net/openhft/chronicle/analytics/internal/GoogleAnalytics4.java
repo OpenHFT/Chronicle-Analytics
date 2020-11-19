@@ -32,53 +32,16 @@ import static net.openhft.chronicle.analytics.internal.HttpUtil.urlEncode;
 import static net.openhft.chronicle.analytics.internal.JsonUtil.asElement;
 import static net.openhft.chronicle.analytics.internal.JsonUtil.jsonElement;
 
-final class GoogleAnalytics implements Analytics {
+final class GoogleAnalytics4 extends AbstractGoogleAnalytics implements Analytics {
 
-    private final AnalyticsConfiguration configuration;
-    private final String clientId;
-    private final AtomicLong lastSendAttemptNs = new AtomicLong();
-    private final AtomicInteger sentMessages = new AtomicInteger();
-
-    GoogleAnalytics(@NotNull final AnalyticsConfiguration configuration) {
-        this.configuration = configuration;
-        this.clientId = ClientIdUtil.acquireClientId(configuration.clientIdFileName(), configuration.debugLogger());
+    GoogleAnalytics4(@NotNull final AnalyticsConfiguration configuration) {
+        super(configuration);
     }
 
-    @Override
-    public void sendEvent(@NotNull final String name, @NotNull final Map<String, String> additionalEventParameters) {
-        if (attemptToSend()) {
-            if (additionalEventParameters.isEmpty()) {
-                httpSend(name, configuration.eventParameters());
-            } else {
-                final Map<String, String> mergedEventParameters = new LinkedHashMap<>(configuration.eventParameters());
-                mergedEventParameters.putAll(additionalEventParameters);
-                httpSend(name, mergedEventParameters);
-            }
-        }
-    }
-
-    private void httpSend(@NotNull String eventName, @NotNull final Map<String, String> eventParameters) {
-        final String url = configuration.url() + "?measurement_id=" + urlEncode(configuration.measurementId(), configuration.errorLogger()) + "&api_secret=" + urlEncode(configuration.apiSecret(), configuration.errorLogger());
-        final String json = jsonFor(eventName, clientId, eventParameters, configuration.userProperties());
-        HttpUtil.send(url, json, configuration.errorLogger(), configuration.debugLogger());
-    }
-
-    boolean attemptToSend() {
-        if (configuration.duration() > 0) {
-            final long nextThresholdNs = lastSendAttemptNs.get() + configuration.timeUnit().toNanos(configuration.duration());
-            if (System.nanoTime() > nextThresholdNs || nextThresholdNs == 0) {
-                // Reset
-                lastSendAttemptNs.set(System.nanoTime());
-                sentMessages.set(0);
-            } else {
-                if (sentMessages.incrementAndGet() >= configuration.messages()) {
-                    // Drop this send event because we have exceeded
-                    // the max number of messages per duration
-                    return false;
-                }
-            }
-        }
-        return true;
+    void httpSend(@NotNull String eventName, @NotNull final Map<String, String> eventParameters) {
+        final String url = configuration().url() + "?measurement_id=" + urlEncode(configuration().measurementId()) + "&api_secret=" + urlEncode(configuration().apiSecret());
+        final String json = jsonFor(eventName, clientId(), eventParameters, configuration().userProperties());
+        HttpUtil.send(url, json, configuration().errorLogger(), configuration().debugLogger());
     }
 
     static String jsonFor(@NotNull final String eventName,
@@ -97,7 +60,7 @@ final class GoogleAnalytics implements Analytics {
                 "  }",
                 " }],",
                 ' ' + asElement("userProperties") + ": {",
-                renderMap(userProperties, GoogleAnalytics::userProperty),
+                renderMap(userProperties, GoogleAnalytics4::userProperty),
                 " }",
                 "}"
         ).collect(joining(JsonUtil.nl()));

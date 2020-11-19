@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,7 +37,7 @@ final class GoogleAnalyticsTest {
 
         final Map<String, String> eventParameters = testMap(0);
         final Map<String, String> userProperties = testMap(2);
-        final String actual = GoogleAnalytics.jsonFor("started", "123", eventParameters, userProperties);
+        final String actual = GoogleAnalytics4.jsonFor("started", "123", eventParameters, userProperties);
 
         assertEquals(expected, actual.replace('"', '\''));
     }
@@ -53,14 +52,14 @@ final class GoogleAnalyticsTest {
         final Function<Map.Entry<String, String>, String> mapper = e -> String.format("mapKey_%s:mapValue_%s", e.getKey(), e.getValue());
 
         final String expected = String.format("mapKey_A:mapValue_1,%nmapKey_B:mapValue_2,%nmapKey_C:mapValue_4");
-        final String actual = GoogleAnalytics.renderMap(map, mapper);
+        final String actual = GoogleAnalytics4.renderMap(map, mapper);
 
         assertEquals(expected, actual);
     }
 
     @Test
     void attemptToSendOneShot() {
-        GoogleAnalytics googleAnalytics = (GoogleAnalytics) new VanillaAnalyticsBuilder("", "")
+        GoogleAnalytics4 googleAnalytics = (GoogleAnalytics4) new VanillaAnalyticsBuilder("", "")
                 .withFrequencyLimit(2, 1, TimeUnit.HOURS)
                 .withReportDespiteJUnit()
                 .build();
@@ -76,7 +75,7 @@ final class GoogleAnalyticsTest {
         final TimeUnit timeUnit = TimeUnit.SECONDS;
         final long duration = 1;
 
-        final GoogleAnalytics googleAnalytics = (GoogleAnalytics) new VanillaAnalyticsBuilder("", "")
+        final GoogleAnalytics4 googleAnalytics = (GoogleAnalytics4) new VanillaAnalyticsBuilder("", "")
                 .withFrequencyLimit(messages, duration, timeUnit)
                 .withReportDespiteJUnit()
                 .build();

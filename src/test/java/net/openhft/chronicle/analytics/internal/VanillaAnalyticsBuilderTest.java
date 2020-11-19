@@ -61,7 +61,7 @@ class VanillaAnalyticsBuilderTest {
 
     @Test
     void withReportDespiteJUnit() {
-        assertTrue(newInstance().withReportDespiteJUnit().build() instanceof GoogleAnalytics);
+        assertTrue(newInstance().withReportDespiteJUnit().build() instanceof GoogleAnalytics4);
     }
 
     @Test

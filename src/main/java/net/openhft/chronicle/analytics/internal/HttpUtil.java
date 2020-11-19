@@ -41,10 +41,10 @@ final class HttpUtil {
     }
 
     public static void send(@NotNull final String urlString,
-                            @NotNull final String json,
+                            @NotNull final String body,
                             @NotNull final Consumer<String> errorLogger,
                             @NotNull final Consumer<String> debugLogger) {
-        EXECUTOR.execute(new Sender(urlString, json, errorLogger, debugLogger));
+        EXECUTOR.execute(new Sender(urlString, body, errorLogger, debugLogger));
     }
 
     static String urlEncode(@NotNull final String s, @NotNull final Consumer<String> errorLogger) {
@@ -59,16 +59,16 @@ final class HttpUtil {
     static final class Sender implements Runnable {
 
         private final String urlString;
-        private final String json;
+        private final String body;
         private final Consumer<String> errorLogger;
         private final Consumer<String> debugLogger;
 
         Sender(@NotNull final String urlString,
-               @NotNull final String json,
+               @NotNull final String body,
                @NotNull final Consumer<String> errorLogger,
                @NotNull final Consumer<String> debugLogger) {
             this.urlString = urlString;
-            this.json = json;
+            this.body = body;
             this.errorLogger = errorLogger;
             this.debugLogger = debugLogger;
         }
@@ -84,8 +84,8 @@ final class HttpUtil {
                 conn.setRequestProperty("Accept", "application/json");
                 conn.setDoOutput(true);
                 try (OutputStream os = conn.getOutputStream()) {
-                    final byte[] input = json.getBytes(StandardCharsets.UTF_8);
-                    os.write(input, 0, input.length);
+                    final byte[] output = body.getBytes(StandardCharsets.UTF_8);
+                    os.write(output, 0, output.length);
                     os.flush();
                 }
 
@@ -96,7 +96,8 @@ final class HttpUtil {
                         response.append(sep).append(responseLine); // preserve some white space
                         sep = " ";
                     }
-                    debugLogger.accept(response.toString().replaceAll("\\s+(?=\\S)", " "));
+                    final String logMsg = response.toString().replaceAll("\\s+(?=\\S)", " ");
+                    debugLogger.accept(logMsg);
                 }
 
             } catch (IOException ioe) {
