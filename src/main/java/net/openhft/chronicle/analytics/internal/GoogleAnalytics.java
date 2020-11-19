@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -36,6 +37,7 @@ final class GoogleAnalytics implements Analytics {
     private final AnalyticsConfiguration configuration;
     private final String clientId;
     private final AtomicLong lastSendAttemptNs = new AtomicLong();
+    private final AtomicInteger sentMessages = new AtomicInteger();
 
     GoogleAnalytics(@NotNull final AnalyticsConfiguration configuration) {
         this.configuration = configuration;
@@ -44,21 +46,14 @@ final class GoogleAnalytics implements Analytics {
 
     @Override
     public void sendEvent(@NotNull final String name, @NotNull final Map<String, String> additionalEventParameters) {
-        if (configuration.duration() > 0) {
-            final long nextThresholdNs = lastSendAttemptNs.get() + configuration.timeUnit().toNanos(configuration.duration());
-            if (System.nanoTime() < nextThresholdNs)
-                // Drop this send event because it was too
-                // close to the previous send attempt not dropped
-                return;
-        }
-        lastSendAttemptNs.set(System.nanoTime());
-
-        if (additionalEventParameters.isEmpty()) {
-            httpSend(name, configuration.eventParameters());
-        } else {
-            final Map<String, String> mergedEventParameters = new LinkedHashMap<>(configuration.eventParameters());
-            mergedEventParameters.putAll(additionalEventParameters);
-            httpSend(name, mergedEventParameters);
+        if (attemptToSend()) {
+            if (additionalEventParameters.isEmpty()) {
+                httpSend(name, configuration.eventParameters());
+            } else {
+                final Map<String, String> mergedEventParameters = new LinkedHashMap<>(configuration.eventParameters());
+                mergedEventParameters.putAll(additionalEventParameters);
+                httpSend(name, mergedEventParameters);
+            }
         }
     }
 
@@ -66,6 +61,24 @@ final class GoogleAnalytics implements Analytics {
         final String url = configuration.url() + "?measurement_id=" + urlEncode(configuration.measurementId(), configuration.errorLogger()) + "&api_secret=" + urlEncode(configuration.apiSecret(), configuration.errorLogger());
         final String json = jsonFor(eventName, clientId, eventParameters, configuration.userProperties());
         HttpUtil.send(url, json, configuration.errorLogger(), configuration.debugLogger());
+    }
+
+    boolean attemptToSend() {
+        if (configuration.duration() > 0) {
+            final long nextThresholdNs = lastSendAttemptNs.get() + configuration.timeUnit().toNanos(configuration.duration());
+            if (System.nanoTime() > nextThresholdNs || nextThresholdNs == 0) {
+                // Reset
+                lastSendAttemptNs.set(System.nanoTime());
+                sentMessages.set(0);
+            } else {
+                if (sentMessages.incrementAndGet() >= configuration.messages()) {
+                    // Drop this send event because we have exceeded
+                    // the max number of messages per duration
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     static String jsonFor(@NotNull final String eventName,

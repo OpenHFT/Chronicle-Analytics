@@ -39,6 +39,7 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     };
     private long duration;
     private TimeUnit timeUnit = TimeUnit.SECONDS;
+    private int messages = 0;
     private String clientIdFileName = Optional.ofNullable(System.getProperty("user.home")).orElse(".") + "/.chronicle.analytics.client.id";
     private String url = "https://www.google-analytics.com/mp/collect";
     private boolean reportDespiteJUnit;
@@ -64,10 +65,14 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
 
     @NotNull
     @Override
-    public Analytics.Builder withFrequencyLimit(final long duration, @NotNull final TimeUnit timeUnit) {
+    public Analytics.Builder withFrequencyLimit(int messages, final long duration, @NotNull final TimeUnit timeUnit) {
+        if (messages < 0) {
+            throw new IllegalArgumentException("messages must not be negative, was " + messages);
+        }
         if (duration < 0) {
             throw new IllegalArgumentException("duration must not be negative, was " + duration);
         }
+        this.messages = messages;
         this.duration = duration;
         this.timeUnit = timeUnit;
         return this;
@@ -150,6 +155,9 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     public @NotNull Consumer<String> debugLogger() {
         return debugLogger;
     }
+
+    @Override
+    public int messages() {return messages; }
 
     @Override
     public long duration() {

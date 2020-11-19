@@ -120,12 +120,13 @@ public interface Analytics {
          * }
          * which yields messages per second.
          *
+         * @param messages max number of messages during the specified duration
          * @param duration minimum duration between upstream messages.
          * @param timeUnit for the provided duration.
          * @return this builder
          */
         @NotNull
-        Builder withFrequencyLimit(long duration, @NotNull TimeUnit timeUnit);
+        Builder withFrequencyLimit(int messages, long duration, @NotNull TimeUnit timeUnit);
 
         /**
          * Specifies a custom logger that will receive error messages.

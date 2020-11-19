@@ -35,13 +35,13 @@ class VanillaAnalyticsBuilderTest {
     void withFrequencyLimit() {
         final Analytics.Builder builder = newInstance();
         assertThrows(IllegalArgumentException.class, () ->
-                builder.withFrequencyLimit(-1, TimeUnit.SECONDS)
+                builder.withFrequencyLimit(1, -1, TimeUnit.SECONDS)
         );
     }
 
     @Test
     void withFrequencyLimit2() {
-        assertNotNull(newInstance().withFrequencyLimit(1, TimeUnit.SECONDS));
+        assertNotNull(newInstance().withFrequencyLimit(1, 1, TimeUnit.SECONDS));
     }
 
     @Test

@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 final class GoogleAnalyticsTest {
 
@@ -54,6 +56,45 @@ final class GoogleAnalyticsTest {
         final String actual = GoogleAnalytics.renderMap(map, mapper);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void attemptToSendOneShot() {
+        GoogleAnalytics googleAnalytics = (GoogleAnalytics) new VanillaAnalyticsBuilder("", "")
+                .withFrequencyLimit(2, 1, TimeUnit.HOURS)
+                .withReportDespiteJUnit()
+                .build();
+
+        assertTrue(googleAnalytics.attemptToSend());
+        assertTrue(googleAnalytics.attemptToSend());
+        assertFalse(googleAnalytics.attemptToSend());
+    }
+
+    @Test
+    void attemptToSendReset() {
+        final int messages = 5;
+        final TimeUnit timeUnit = TimeUnit.SECONDS;
+        final long duration = 1;
+
+        final GoogleAnalytics googleAnalytics = (GoogleAnalytics) new VanillaAnalyticsBuilder("", "")
+                .withFrequencyLimit(messages, duration, timeUnit)
+                .withReportDespiteJUnit()
+                .build();
+
+        for (int i = 0; i < messages; i++) {
+            assertTrue(googleAnalytics.attemptToSend());
+        }
+        assertFalse(googleAnalytics.attemptToSend());
+        try {
+            Thread.sleep(timeUnit.toMillis(duration) + 100);
+        } catch (InterruptedException ignored) {
+            // Should not happen
+        }
+        // Hurray! We've got more messages!
+        for (int i = 0; i < messages; i++) {
+            assertTrue(googleAnalytics.attemptToSend());
+        }
+        assertFalse(googleAnalytics.attemptToSend());
     }
 
     private Map<String, String> testMap(int start) {

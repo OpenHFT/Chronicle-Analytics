@@ -31,6 +31,7 @@ public interface AnalyticsConfiguration {
     @NotNull Consumer<String> errorLogger();
     @NotNull Consumer<String> debugLogger();
     long duration();
+    int messages();
     @NotNull TimeUnit timeUnit();
     @NotNull String clientIdFileName();
     @NotNull String url();
