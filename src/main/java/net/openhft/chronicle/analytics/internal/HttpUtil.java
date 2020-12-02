@@ -97,7 +97,8 @@ final class HttpUtil {
                         sep = " ";
                     }
                     final String logMsg = response.toString().replaceAll("\\s+(?=\\S)", " ");
-                    debugLogger.accept(logMsg);
+                    if (!logMsg.isEmpty())
+                        debugLogger.accept(logMsg);
                 }
 
             } catch (IOException ioe) {
