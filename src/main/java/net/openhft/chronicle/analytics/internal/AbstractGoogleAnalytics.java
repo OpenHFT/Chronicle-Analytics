@@ -65,9 +65,9 @@ abstract class AbstractGoogleAnalytics implements Analytics {
             if (System.nanoTime() > nextThresholdNs || nextThresholdNs == 0) {
                 // Reset
                 lastSendAttemptNs.set(System.nanoTime());
-                sentMessages.set(0);
+                sentMessages.set(1);
             } else {
-                if (sentMessages.incrementAndGet() >= configuration.messages()) {
+                if (sentMessages.getAndIncrement() >= configuration.messages()) {
                     // Drop this send event because we have exceeded
                     // the max number of messages per duration
                     return false;
