@@ -30,6 +30,8 @@ import java.util.function.Consumer;
 
 final class HttpUtil {
 
+    private static final int DEFAULT_TIME_OUT_MS = 2_000;
+
     private static final String THREAD_NAME = "chronicle-analytics-http-client";
     private static final Executor EXECUTOR = Executors.newSingleThreadExecutor(runnable -> {
         final Thread thread = new Thread(runnable, THREAD_NAME);
@@ -78,6 +80,9 @@ final class HttpUtil {
             try {
                 final URL url = new URL(urlString);
                 final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                // Do not linger if the connection is slow. Give up instead!
+                conn.setConnectTimeout(DEFAULT_TIME_OUT_MS);
+                conn.setReadTimeout(DEFAULT_TIME_OUT_MS);
                 conn.setRequestMethod("POST");
                 //conn.setRequestProperty("Content-Type", "application/json; utf-8"); // For some reason, this does not work...
                 conn.setRequestProperty("Content-Type", "text/plain; charset=UTF-8");
