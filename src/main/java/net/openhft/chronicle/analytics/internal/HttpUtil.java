@@ -32,7 +32,7 @@ final class HttpUtil {
 
     private static final int DEFAULT_TIME_OUT_MS = 2_000;
 
-    private static final String THREAD_NAME = "chronicle-analytics-http-client";
+    private static final String THREAD_NAME = "~chronicle-analytics-http-client";
     private static final Executor EXECUTOR = Executors.newSingleThreadExecutor(runnable -> {
         final Thread thread = new Thread(runnable, THREAD_NAME);
         thread.setDaemon(true);
