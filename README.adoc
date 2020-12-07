@@ -36,7 +36,7 @@ toc::[]
 Under `noop` there is a build for an empty jar which when included will ensure this jar does nothing.
 This jar is redundant but can help ensure this jar does nothing.
 
-To disable this jar include the following in maven
+To disable this jar include the following in Maven: 
 
 [script,xml]
 ----
@@ -44,6 +44,17 @@ To disable this jar include the following in maven
     <groupId>net.openhft</groupId>
     <artifactId>chronicle-analytics</artifactId>
     <version>0.20.0</version>
+----
+
+To disable this jar with Gradle use: 
+
+[script,xml]
+----
+configurations {
+    implementation {
+      exclude group: 'net.openhft', module: 'chronicle-analytics'
+    }
+}
 ----
 
 == Using the library
