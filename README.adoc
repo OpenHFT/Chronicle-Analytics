@@ -46,7 +46,7 @@ To disable this jar include the following in Maven:
     <version>0.20.0</version>
 ----
 
-To disable this jar with Gradle use: 
+To disable this library with Gradle, use: 
 
 [script,xml]
 ----
