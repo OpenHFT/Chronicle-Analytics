@@ -39,7 +39,8 @@ final class GoogleAnalyticsTest {
         final Map<String, String> userProperties = testMap(2);
         final String actual = GoogleAnalytics4.jsonFor("started", "123", eventParameters, userProperties);
 
-        assertEquals(expected, actual.replace('"', '\''));
+        assertEquals(expected, actual.replace('"', '\'')
+                .replace("\r\n", "\n"));
     }
 
     @Test
