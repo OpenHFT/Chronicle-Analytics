@@ -84,10 +84,12 @@ final class HttpUtilTest {
 
     @Test
     void unknownHost() {
-        final HttpUtil.Sender sender = new HttpUtil.Sender("http://euhgu23723fvx27ef327f_very_unlikely_to_ever_exist", "{}", errorResponses::add, debugResponses::add);
+        // the address must have a dot . at the end or it can be assumed to be an unqualified domain name.
+        final HttpUtil.Sender sender = new HttpUtil.Sender("http://euhgu23723fvx27ef327f.very.unlikely.to.ever.exist.", "{}", errorResponses::add, debugResponses::add);
         sender.run();
         assertEquals(1, errorResponses.size());
-        assertTrue(errorResponses.get(0).contains("UnknownHostException"));
+        String msg = errorResponses.get(0);
+        assertTrue(msg.contains("UnknownHostException"));
     }
 
     @Test
