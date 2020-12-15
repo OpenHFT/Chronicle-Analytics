@@ -24,13 +24,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.joining;
-import static net.openhft.chronicle.analytics.internal.HttpUtil.urlEncode;
-import static net.openhft.chronicle.analytics.internal.JsonUtil.asElement;
-import static net.openhft.chronicle.analytics.internal.JsonUtil.jsonElement;
 
 abstract class AbstractGoogleAnalytics implements Analytics {
 
