@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,6 +48,19 @@ class VanillaAnalyticsBuilderTest {
     @Test
     void withErrorLogger() {
         assertSame(TEST_LOGGER, ((VanillaAnalyticsBuilder) newInstance().withErrorLogger(TEST_LOGGER)).errorLogger());
+    }
+
+    @Test
+    void withErrorLoggerSuper() {
+        final AtomicReference<CharSequence> reference = new AtomicReference<>();
+        final Consumer<? super String> consumer = (Consumer<CharSequence>) reference::set;
+
+        final Consumer<String> returnedConsumer = ((VanillaAnalyticsBuilder) newInstance().withErrorLogger(consumer)).errorLogger();
+
+        final String s = "Tryggve";
+
+        returnedConsumer.accept(s);
+        assertEquals(s, reference.get());
     }
 
     @Test

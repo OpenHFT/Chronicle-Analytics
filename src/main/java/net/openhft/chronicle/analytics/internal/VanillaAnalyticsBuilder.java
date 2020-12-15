@@ -34,8 +34,8 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     //
     private final Map<String, String> userProperties = new LinkedHashMap<>();
     private final Map<String, String> eventParameters = new LinkedHashMap<>();
-    private Consumer<String> errorLogger = System.err::println;
-    private Consumer<String> debugLogger = s -> {
+    private Consumer<? super String> errorLogger = System.err::println;
+    private Consumer<? super String> debugLogger = s -> {
     };
     private long duration;
     private TimeUnit timeUnit = TimeUnit.SECONDS;
@@ -79,13 +79,13 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     }
 
     @Override
-    public Analytics.@NotNull Builder withErrorLogger(@NotNull final Consumer<String> errorLogger) {
+    public Analytics.@NotNull Builder withErrorLogger(@NotNull final Consumer<? super String> errorLogger) {
         this.errorLogger = errorLogger;
         return this;
     }
 
     @Override
-    public Analytics.@NotNull Builder withDebugLogger(@NotNull final Consumer<String> debugLogger) {
+    public Analytics.@NotNull Builder withDebugLogger(@NotNull final Consumer<? super String> debugLogger) {
         this.debugLogger = debugLogger;
         return this;
     }
@@ -150,14 +150,16 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
         return eventParameters;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public @NotNull Consumer<String> errorLogger() {
-        return errorLogger;
+        return (Consumer<String>) errorLogger;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public @NotNull Consumer<String> debugLogger() {
-        return debugLogger;
+        return (Consumer<String>) debugLogger;
     }
 
     @Override
