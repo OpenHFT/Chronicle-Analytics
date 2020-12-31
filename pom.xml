@@ -25,7 +25,6 @@
         <version>1.1.24</version>
         <relativePath />
     </parent>
-
     <artifactId>chronicle-analytics</artifactId>
     <version>2.21ea0-SNAPSHOT</version>
     <name>OpenHFT/Chronicle-Analytics</name>
