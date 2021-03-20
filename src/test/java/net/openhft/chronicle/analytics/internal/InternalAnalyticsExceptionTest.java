@@ -2,7 +2,7 @@ package net.openhft.chronicle.analytics.internal;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 final class InternalAnalyticsExceptionTest {
 
@@ -14,5 +14,4 @@ final class InternalAnalyticsExceptionTest {
         final String actual = e.getMessage();
         assertEquals(MSG, actual);
     }
-
 }

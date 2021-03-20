@@ -75,5 +75,4 @@ final class GoogleAnalytics3 extends AbstractGoogleAnalytics implements Analytic
         return payload.toString();
 
     }
-
 }

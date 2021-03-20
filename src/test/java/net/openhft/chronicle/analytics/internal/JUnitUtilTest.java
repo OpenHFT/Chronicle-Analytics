@@ -2,7 +2,8 @@ package net.openhft.chronicle.analytics.internal;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class JUnitUtilTest {
 
@@ -20,5 +21,4 @@ final class JUnitUtilTest {
     void isClassAvailableInventedName() {
         assertFalse(JUnitUtil.isClassAvailable("VeryUnliKELyNameToBeAnExisTINgClazz"));
     }
-
 }

@@ -109,5 +109,4 @@ final class GoogleAnalyticsTest {
         base += offset;
         return "" + base;
     }
-
 }

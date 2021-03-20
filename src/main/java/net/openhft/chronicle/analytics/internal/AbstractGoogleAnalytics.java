@@ -81,5 +81,4 @@ abstract class AbstractGoogleAnalytics implements Analytics {
     String urlEncode(String s) {
         return HttpUtil.urlEncode(s, configuration().errorLogger());
     }
-
 }

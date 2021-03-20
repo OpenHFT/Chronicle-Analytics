@@ -62,7 +62,6 @@ final class GoogleAnalytics4 extends AbstractGoogleAnalytics implements Analytic
         ).collect(joining(JsonUtil.nl()));
     }
 
-
     static String userProperty(final Map.Entry<String, String> userProperty) {
         return String.format("  %s: {%n %s%n  }", asElement(userProperty.getKey()), jsonElement("   ", "value", userProperty.getValue()));
     }
@@ -72,5 +71,4 @@ final class GoogleAnalytics4 extends AbstractGoogleAnalytics implements Analytic
                 .map(mapper)
                 .collect(joining(String.format(",%n")));
     }
-
 }

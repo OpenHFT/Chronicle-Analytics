@@ -18,7 +18,6 @@ a variety of tools available from Google and other providers.
 Here is a short Java snippet showing how one could use the library to send a Google Analytics event
 for the measurement id "G-TDAZG4CU3G" using the api secret "k2hL3x2dQaKq9F2gQ-PNhQ".
 
-
 [source,java]
 ----
 Analytics.builder("G-TDAZG4CU3G", "k2hL3x2dQaKq9F2gQ-PNhQ") // measurementId, apiSecret

@@ -158,5 +158,4 @@ class VanillaAnalyticsBuilderTest {
     private VanillaAnalyticsBuilder newInstance() {
         return new VanillaAnalyticsBuilder(MEASUREMENT_ID, API_SECRET);
     }
-
 }

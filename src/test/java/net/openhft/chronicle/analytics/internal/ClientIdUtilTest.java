@@ -59,5 +59,4 @@ class ClientIdUtilTest {
     private void cleanupFile() {
         new File(FILE_NAME).delete();
     }
-
 }

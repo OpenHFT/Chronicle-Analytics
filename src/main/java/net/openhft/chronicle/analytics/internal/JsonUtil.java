@@ -35,5 +35,4 @@ final class JsonUtil {
     static String nl() {
         return NL;
     }
-
 }

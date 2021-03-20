@@ -21,5 +21,4 @@ final class JUnitUtil {
         }
         return true;
     }
-
 }

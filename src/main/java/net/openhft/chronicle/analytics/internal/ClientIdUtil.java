@@ -40,5 +40,4 @@ enum ClientIdUtil {
         }
         return id;
     }
-
 }
