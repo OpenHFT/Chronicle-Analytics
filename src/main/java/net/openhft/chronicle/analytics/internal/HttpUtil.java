@@ -54,7 +54,7 @@ final class HttpUtil {
             return URLEncoder.encode(s, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
             errorLogger.accept(e.toString());
-            throw new InternalAnalyticsException("This should never happen as " + StandardCharsets.UTF_8.toString() + " should always be present.");
+            throw new InternalAnalyticsException("This should never happen as " + StandardCharsets.UTF_8 + " should always be present.");
         }
     }
 
