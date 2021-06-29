@@ -13,7 +13,8 @@ import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-enum ClientIdUtil {;
+enum ClientIdUtil {
+    ; // none
 
     // This tries to read a client id from a "cookie" file in the
     // user's home directory. If that fails, a new random clientId
