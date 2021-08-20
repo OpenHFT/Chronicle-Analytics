@@ -26,7 +26,7 @@
         <relativePath />
     </parent>
     <artifactId>chronicle-analytics</artifactId>
-    <version>2.21.1-SNAPSHOT</version>
+    <version>2.21.1</version>
     <name>OpenHFT/Chronicle-Analytics</name>
     <description>Chronicle-Analytics</description>
     <packaging>bundle</packaging>
@@ -354,7 +354,7 @@
         <connection>scm:git:git@github.com:OpenHFT/Chronicle-Analytics.git</connection>
         <developerConnection>scm:git:git@github.com:OpenHFT/Chronicle-Analytics.git
         </developerConnection>
-        <tag>master</tag>
+        <tag>chronicle-analytics-2.21.1</tag>
     </scm>
 
 </project>
