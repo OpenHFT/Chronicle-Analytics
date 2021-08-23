@@ -354,7 +354,7 @@
         <connection>scm:git:git@github.com:OpenHFT/Chronicle-Analytics.git</connection>
         <developerConnection>scm:git:git@github.com:OpenHFT/Chronicle-Analytics.git
         </developerConnection>
-        <tag>master</tag>
+        <tag>release/2.21</tag>
     </scm>
 
 </project>
