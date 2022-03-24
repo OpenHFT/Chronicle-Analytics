@@ -30,7 +30,7 @@ class ClientIdUtilTest {
     @Test
     void acquireClientId() {
         // First time
-        final String clientId = ClientIdUtil.acquireClientId(FILE_NAME, debugMessages::add);
+        final String clientId = FilesUtil.acquireClientId(FILE_NAME, debugMessages::add);
         assertDoesNotThrow(() -> UUID.fromString(clientId));
         assertEquals(1, debugMessages.size());
         final String msg = debugMessages.get(0);
@@ -39,7 +39,7 @@ class ClientIdUtilTest {
 
         // Second time should give the same id
         final List<String> debugMessages2 = new ArrayList<>();
-        final String clientId2 = ClientIdUtil.acquireClientId(FILE_NAME, debugMessages2::add);
+        final String clientId2 = FilesUtil.acquireClientId(FILE_NAME, debugMessages2::add);
         assertEquals(clientId, clientId2);
         assertTrue(debugMessages2.isEmpty());
     }
@@ -47,7 +47,7 @@ class ClientIdUtilTest {
     @Test
     void acquireClientIdIllegalFile() {
         final String illegalFileName = ".";
-        final String clientId = ClientIdUtil.acquireClientId(illegalFileName, debugMessages::add);
+        final String clientId = FilesUtil.acquireClientId(illegalFileName, debugMessages::add);
         assertNotNull(clientId);
 
         assertEquals(2, debugMessages.size());
