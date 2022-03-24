@@ -18,6 +18,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 enum FilesUtil {
     ; // none
 
+    private static final String CHRONICLE_ANALYTICS_LAST_FILE_NAME = "/.chronicle.analytics.last";
+
     // This tries to read a client id from a "cookie" file in the
     // user's home directory. If that fails, a new random clientId
     // is generated and an attempt is made to save it in said file.
@@ -43,15 +45,16 @@ enum FilesUtil {
         return id;
     }
 
-    static boolean isNowSameAsLastUsedFileTimeStampSecond() {
+    static boolean isSameAsLastUsedFileTimeStampSecond(final int currentSecondOfDay) {
         final Path path = lastPath();
         try (Stream<String> lines = Files.lines(path, UTF_8)) {
             final int secondOfDay = lines
                     .findFirst()
                     .map(Integer::parseInt)
                     .orElse(0);
-            final boolean same = secondOfDay == LocalTime.now().toSecondOfDay();
+            final boolean same = (secondOfDay == currentSecondOfDay);
             if (!same) {
+                // We are on a new second so store the new second
                 touchLastContent(path);
             }
             return same;
@@ -81,7 +84,7 @@ enum FilesUtil {
     private static Path lastPath() {
         final String fileName = Optional.ofNullable(System.getProperty("user.home"))
                 .orElse(".") +
-                "/.chronicle.analytics.last";
+                CHRONICLE_ANALYTICS_LAST_FILE_NAME;
         return Paths.get(fileName);
     }
 
