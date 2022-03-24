@@ -86,7 +86,7 @@ final class GoogleAnalyticsTest {
                 .build();
 
         for (int i = 0; i < messages; i++) {
-            assertTrue(googleAnalytics.attemptToSend());
+            assertTrue(googleAnalytics.attemptToSend(), "Round " + i);
         }
         assertFalse(googleAnalytics.attemptToSend());
         try {
