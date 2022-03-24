@@ -3,11 +3,13 @@ package net.openhft.chronicle.analytics.internal;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import static net.openhft.chronicle.analytics.internal.FilesUtil.removeLastUsedFileTimeStampSecond;
 import static org.junit.jupiter.api.Assertions.*;
 
 final class GoogleAnalyticsTest {
@@ -60,6 +62,7 @@ final class GoogleAnalyticsTest {
 
     @Test
     void attemptToSendOneShot() {
+        removeLastUsedFileTimeStampSecond();
         GoogleAnalytics4 googleAnalytics = (GoogleAnalytics4) new VanillaAnalyticsBuilder("", "")
                 .withFrequencyLimit(2, 1, TimeUnit.HOURS)
                 .withReportDespiteJUnit()
@@ -76,13 +79,14 @@ final class GoogleAnalyticsTest {
         final TimeUnit timeUnit = TimeUnit.SECONDS;
         final long duration = 1;
 
+        removeLastUsedFileTimeStampSecond();
         final GoogleAnalytics4 googleAnalytics = (GoogleAnalytics4) new VanillaAnalyticsBuilder("", "")
                 .withFrequencyLimit(messages, duration, timeUnit)
                 .withReportDespiteJUnit()
                 .build();
 
         for (int i = 0; i < messages; i++) {
-            assertTrue(googleAnalytics.attemptToSend());
+            assertTrue(googleAnalytics.attemptToSend(), "Round " + i);
         }
         assertFalse(googleAnalytics.attemptToSend());
         try {
@@ -95,6 +99,39 @@ final class GoogleAnalyticsTest {
             assertTrue(googleAnalytics.attemptToSend());
         }
         assertFalse(googleAnalytics.attemptToSend());
+    }
+
+    @Test
+    void attemptToSendLastUsedLimit() {
+        removeLastUsedFileTimeStampSecond();
+
+        for (int i = 0; i < 2; i++) {
+            waitForNewSecond();
+            GoogleAnalytics4 googleAnalytics = (GoogleAnalytics4) new VanillaAnalyticsBuilder("", "")
+                    .withFrequencyLimit(1, 1, TimeUnit.HOURS)
+                    .withReportDespiteJUnit()
+                    .build();
+
+            // It is now likely that this instance is creates on the same second of the day
+            GoogleAnalytics4 googleAnalytics2 = (GoogleAnalytics4) new VanillaAnalyticsBuilder("", "")
+                    .withFrequencyLimit(1, 1, TimeUnit.HOURS)
+                    .withReportDespiteJUnit()
+                    .build();
+
+            assertTrue(googleAnalytics.attemptToSend());
+            // Because googleAnalytics2 was created on the same second as the previous,
+            // no send should be made
+            assertFalse(googleAnalytics2.attemptToSend());
+
+        }
+    }
+
+    private void waitForNewSecond() {
+        final int lastSecond = LocalTime.now().toSecondOfDay();
+        // Wait for a fresh second
+        while (LocalTime.now().toSecondOfDay() == lastSecond) {
+            // spin wait
+        }
     }
 
     private Map<String, String> testMap(int start) {

@@ -20,10 +20,13 @@ package net.openhft.chronicle.analytics.internal;
 import net.openhft.chronicle.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static net.openhft.chronicle.analytics.internal.FilesUtil.isSameAsLastUsedFileTimeStampSecond;
 
 abstract class AbstractGoogleAnalytics implements Analytics {
 
@@ -31,10 +34,12 @@ abstract class AbstractGoogleAnalytics implements Analytics {
     private final String clientId;
     private final AtomicLong lastSendAttemptNs = new AtomicLong();
     private final AtomicInteger sentMessages = new AtomicInteger();
+    private final boolean muted;
 
     AbstractGoogleAnalytics(@NotNull final AnalyticsConfiguration configuration) {
         this.configuration = configuration;
-        this.clientId = ClientIdUtil.acquireClientId(configuration.clientIdFileName(), configuration.debugLogger());
+        this.clientId = FilesUtil.acquireClientId(configuration.clientIdFileName(), configuration.debugLogger());
+        this.muted = isSameAsLastUsedFileTimeStampSecond(LocalTime.now().toSecondOfDay());
     }
 
     @Override
@@ -53,6 +58,10 @@ abstract class AbstractGoogleAnalytics implements Analytics {
     abstract void httpSend(@NotNull String eventName, @NotNull final Map<String, String> eventParameters);
 
     boolean attemptToSend() {
+        if (muted) {
+            // Prevent a call storm if many instances are started on the same machine
+            return false;
+        }
         if (configuration.duration() > 0) {
             final long nextThresholdNs = lastSendAttemptNs.get() + configuration.timeUnit().toNanos(configuration.duration());
             if (System.nanoTime() > nextThresholdNs || nextThresholdNs == 0) {
