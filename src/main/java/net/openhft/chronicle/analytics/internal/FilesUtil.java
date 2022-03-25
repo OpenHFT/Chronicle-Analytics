@@ -75,9 +75,10 @@ enum FilesUtil {
     // Just for test purposes
     static void removeLastUsedFileTimeStampSecond() {
         try {
-            Files.delete(lastPath());
-        } catch (IOException ignore) {
+            Files.deleteIfExists(lastPath());
+        } catch (IOException ioe) {
             // Just for testing so we do not care so much
+            ioe.printStackTrace();
         }
     }
 
