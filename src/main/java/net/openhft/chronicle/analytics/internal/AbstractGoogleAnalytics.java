@@ -34,7 +34,7 @@ abstract class AbstractGoogleAnalytics implements Analytics {
     private final String clientId;
     private final AtomicLong lastSendAttemptNs = new AtomicLong();
     private final AtomicInteger sentMessages = new AtomicInteger();
-    private final boolean muted;
+    final boolean muted;
 
     AbstractGoogleAnalytics(@NotNull final AnalyticsConfiguration configuration) {
         this.configuration = configuration;
@@ -70,7 +70,7 @@ abstract class AbstractGoogleAnalytics implements Analytics {
                 sentMessages.set(1);
             } else {
                 if (sentMessages.getAndIncrement() >= configuration.messages()) {
-                    // Drop this send event because we have exceeded
+                    // Drop the send event because we have exceeded
                     // the max number of messages per duration
                     return false;
                 }
