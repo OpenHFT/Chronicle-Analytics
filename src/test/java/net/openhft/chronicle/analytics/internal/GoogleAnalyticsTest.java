@@ -85,6 +85,8 @@ final class GoogleAnalyticsTest {
                 .withReportDespiteJUnit()
                 .build();
 
+        assertFalse(googleAnalytics.muted, "The instance is muted!");
+
         for (int i = 0; i < messages; i++) {
             assertTrue(googleAnalytics.attemptToSend(), "Round " + i);
         }
