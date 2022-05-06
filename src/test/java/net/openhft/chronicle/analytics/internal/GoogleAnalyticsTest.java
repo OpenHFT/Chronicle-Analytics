@@ -74,7 +74,7 @@ final class GoogleAnalyticsTest {
         assertFalse(googleAnalytics.attemptToSend());
     }
 
-    @Ignore("flaky test")
+    @Ignore("flaky test -  see https://github.com/OpenHFT/Chronicle-Analytics/issues/18")
     @Test
     void attemptToSendReset() {
         final int messages = 5;
