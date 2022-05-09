@@ -13,6 +13,7 @@ import java.util.function.Function;
 import static net.openhft.chronicle.analytics.internal.FilesUtil.removeLastUsedFileTimeStampSecond;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Ignore("flaky test see https://teamcity.chronicle.software/buildConfiguration/Chronicle_BuildAll_Build/676130?hideProblemsFromDependencies=false&hideTestsFromDependencies=false&expandBuildChangesSection=true&expandBuildTestsSection=true")
 final class GoogleAnalyticsTest {
 
     @Test
