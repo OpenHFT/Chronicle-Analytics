@@ -1,7 +1,7 @@
 package net.openhft.chronicle.analytics.internal;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
@@ -13,7 +13,7 @@ import java.util.function.Function;
 import static net.openhft.chronicle.analytics.internal.FilesUtil.removeLastUsedFileTimeStampSecond;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Ignore(/* failing test https://teamcity.chronicle.software/buildConfiguration/Chronicle_BuildAll_Build/677499?hideProblemsFromDependencies=false&hideTestsFromDependencies=false&expandBuildChangesSection=true&expandBuildTestsSection=true */)
+@Disabled(/* failing test https://teamcity.chronicle.software/buildConfiguration/Chronicle_BuildAll_Build/677499?hideProblemsFromDependencies=false&hideTestsFromDependencies=false&expandBuildChangesSection=true&expandBuildTestsSection=true */)
 final class GoogleAnalyticsTest {
 
     @Test
@@ -75,7 +75,6 @@ final class GoogleAnalyticsTest {
         assertFalse(googleAnalytics.attemptToSend());
     }
 
-    @Ignore("flaky test -  see https://github.com/OpenHFT/Chronicle-Analytics/issues/18")
     @Test
     void attemptToSendReset() {
         final int messages = 5;
