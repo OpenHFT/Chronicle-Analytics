@@ -37,9 +37,9 @@ final class GoogleAnalyticsTest {
     @Test
     void jsonFor() {
         final String expected = "{\n" +
-                " 'clientId': '123',\n" +
-                " 'userId': '123',\n" +
-                " 'nonPersonalizedAds': true,\n" +
+                " 'client_id': '123',\n" +
+                " 'user_id': '123',\n" +
+                " 'non_personalized_ads': true,\n" +
                 " 'events': [{\n" +
                 "  'name': 'started',\n" +
                 "  'params': {\n" +
@@ -47,7 +47,7 @@ final class GoogleAnalyticsTest {
                 "   'B': '2'\n" +
                 "  }\n" +
                 " }],\n" +
-                " 'userProperties': {\n" +
+                " 'user_properties': {\n" +
                 "  'C': {\n" +
                 "    'value': '3'\n" +
                 "  },\n" +

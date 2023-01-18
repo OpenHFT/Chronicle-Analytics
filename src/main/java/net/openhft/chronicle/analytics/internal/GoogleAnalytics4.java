@@ -46,16 +46,16 @@ final class GoogleAnalytics4 extends AbstractGoogleAnalytics implements Analytic
                           @NotNull final Map<String, String> userProperties) {
         return Stream.of(
                 "{",
-                jsonElement(" ", "clientId", clientId) + ',',
-                jsonElement(" ", "userId", clientId) + ',',
-                jsonElement(" ", "nonPersonalizedAds", true) + ',',
+                jsonElement(" ", "client_id", clientId) + ',',
+                jsonElement(" ", "user_id", clientId) + ',',
+                jsonElement(" ", "non_personalized_ads", true) + ',',
                 ' ' + asElement("events") + ": [{",
                 jsonElement("  ", "name", eventName) + ',',
                 "  " + asElement("params") + ": {",
                 renderMap(eventParameters, e -> jsonElement("   ", e.getKey(), e.getValue())),
                 "  }",
                 " }],",
-                ' ' + asElement("userProperties") + ": {",
+                ' ' + asElement("user_properties") + ": {",
                 renderMap(userProperties, GoogleAnalytics4::userProperty),
                 " }",
                 "}"
