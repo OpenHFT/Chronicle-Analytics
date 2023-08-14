@@ -22,7 +22,7 @@
     <parent>
         <groupId>net.openhft</groupId>
         <artifactId>java-parent-pom</artifactId>
-        <version>1.1.36</version>
+        <version>1.24.0-SNAPSHOT</version>
         <relativePath />
     </parent>
     <artifactId>chronicle-analytics</artifactId>
@@ -31,16 +31,12 @@
     <description>Chronicle-Analytics</description>
     <packaging>bundle</packaging>
 
-    <properties>
-        <junit.jupiter.version>5.7.0</junit.jupiter.version>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>net.openhft</groupId>
                 <artifactId>third-party-bom</artifactId>
-                <version>3.22.3</version>
+                <version>3.24.0-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -58,14 +54,30 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-commons</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
-            <version>4.9.3</version>
             <scope>test</scope>
         </dependency>
 
@@ -82,7 +94,7 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
+                <artifactId >maven-javadoc-plugin</artifactId>
                 <configuration>
                     <excludePackageNames>*.internal:*.internal.*</excludePackageNames>
                 </configuration>
@@ -138,7 +150,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
                 <configuration>
                     <archive>
                         <manifestEntries>
@@ -236,7 +247,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.6</version>
                 <executions>
                     <execution>
                         <goals>
@@ -256,7 +266,6 @@
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.8.0.2131</version>
             </plugin>
 
         </plugins>
