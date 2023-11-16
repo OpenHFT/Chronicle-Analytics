@@ -22,27 +22,23 @@
     <parent>
         <groupId>net.openhft</groupId>
         <artifactId>java-parent-pom</artifactId>
-        <version>1.1.31</version>
+        <version>1.1.24</version>
         <relativePath />
     </parent>
+
     <artifactId>chronicle-analytics</artifactId>
-    <version>2.23ea1-SNAPSHOT</version>
+    <version>99.0.EMPTY-SNAPSHOT</version>
     <name>OpenHFT/Chronicle-Analytics</name>
     <description>Chronicle-Analytics</description>
     <packaging>bundle</packaging>
-
-    <properties>
-        <junit.jupiter.version>5.7.0</junit.jupiter.version>
-        <junit.platform.provider.version>1.7.0</junit.platform.provider.version>
-    </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>net.openhft</groupId>
                 <artifactId>third-party-bom</artifactId>
-                <version>3.22.3</version>
                 <type>pom</type>
+                <version>3.19.4</version>
                 <scope>import</scope>
             </dependency>
         </dependencies>
@@ -53,41 +49,6 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-        </dependency>
-
-        <!-- test dependencies -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-engine</artifactId>
-            <version>${junit.platform.provider.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>mockwebserver</artifactId>
-            <version>4.9.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -124,10 +85,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <!-- we want to fail if we depend on any deprecated methods -->
-                    <failOnWarning>true</failOnWarning>
-                    <showWarnings>true</showWarnings>
-                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <compilerArgument>-Xlint:deprecation</compilerArgument>
                 </configuration>
                 <!-- build a multi-release jar -->
                 <executions>
@@ -227,53 +185,6 @@
                 </executions>
             </plugin>
 
-<!--        Enable once https://github.com/osundblad/intellij-annotations-instrumenter-maven-plugin/issues/53  has been fixed
-            <plugin>
-                <groupId>se.eris</groupId>
-                <artifactId>notnull-instrumenter-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>instrument</goal>
-                            <goal>tests-instrument</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jetbrains</groupId>
-                        <artifactId>annotations</artifactId>
-                        <version>19.0.0</version>
-                    </dependency>
-                </dependencies>
-            </plugin>-->
-
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.6</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.8.0.2131</version>
-            </plugin>
-
         </plugins>
     </build>
 
@@ -315,9 +226,6 @@
     <profiles>
         <profile>
             <id>java11</id>
-            <activation>
-                <jdk>[11,</jdk>
-            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -339,6 +247,10 @@
                         <configuration>
                             <source>11</source>
                             <target>11</target>
+                            <compilerArgs>
+                                <arg>--add-exports=java.base/jdk.internal.ref=ALL-UNNAMED</arg>
+                                <arg>--add-exports=java.base/sun.nio.ch=ALL-UNNAMED</arg>
+                            </compilerArgs>
                             <excludes>
                                 <exclude>**/jdk8/**</exclude>
                                 <exclude>**/META-INF/services/**</exclude>
@@ -355,7 +267,15 @@
         <connection>scm:git:git@github.com:OpenHFT/Chronicle-Analytics.git</connection>
         <developerConnection>scm:git:git@github.com:OpenHFT/Chronicle-Analytics.git
         </developerConnection>
-        <tag>master</tag>
+        <tag>chronicle-analytics-0.EMPTY</tag>
     </scm>
 
+<distributionManagement>
+    <repository>
+      <id>chronicle-enterprise-release</id>
+      <url>https://nexus.chronicle.software/repository/releases</url>
+    </repository>
+  </distributionManagement>
+
 </project>
+
