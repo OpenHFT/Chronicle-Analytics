@@ -27,7 +27,7 @@
     </parent>
 
     <artifactId>chronicle-analytics</artifactId>
-    <version>99.0.EMPTY</version>
+    <version>99.1.EMPTY-SNAPSHOT</version>
     <name>OpenHFT/Chronicle-Analytics</name>
     <description>Chronicle-Analytics</description>
     <packaging>bundle</packaging>
@@ -267,7 +267,7 @@
         <connection>scm:git:git@github.com:OpenHFT/Chronicle-Analytics.git</connection>
         <developerConnection>scm:git:git@github.com:OpenHFT/Chronicle-Analytics.git
         </developerConnection>
-        <tag>chronicle-analytics-99.0.EMPTY</tag>
+        <tag>chronicle-analytics-0.EMPTY</tag>
     </scm>
 
 <distributionManagement>
