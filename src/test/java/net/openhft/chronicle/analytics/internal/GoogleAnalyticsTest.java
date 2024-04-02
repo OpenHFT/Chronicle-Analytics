@@ -166,7 +166,7 @@ final class GoogleAnalyticsTest {
 
     @NotNull
     private String asChar(char base, int offset) {
-        base = (char) (base + offset);
+        base += (char) offset;
         return "" + base;
     }
 }
