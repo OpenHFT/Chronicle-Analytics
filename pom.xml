@@ -115,37 +115,6 @@
                 </configuration>
             </plugin>
 
-            <!-- used to allow getClass().getPackage().getImplementationVersion() -->
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <!-- we want to fail if we depend on any deprecated methods -->
-                    <showWarnings>true</showWarnings>
-                    <compilerArgument>-Xlint:all</compilerArgument>
-                </configuration>
-                <!-- build a multi-release jar -->
-                <executions>
-                    <execution>
-                        <id>java8</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>java11</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <compileSourceRoots>${project.basedir}/src/main/java11</compileSourceRoots>
-                            <outputDirectory>${project.build.outputDirectory}/META-INF/versions/11</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -300,18 +269,6 @@
                                     </excludes>
                                 </resource>
                             </resources>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <source>11</source>
-                            <target>11</target>
-                            <excludes>
-                                <exclude>**/jdk8/**</exclude>
-                                <exclude>**/META-INF/services/**</exclude>
-                            </excludes>
                         </configuration>
                     </plugin>
                 </plugins>
