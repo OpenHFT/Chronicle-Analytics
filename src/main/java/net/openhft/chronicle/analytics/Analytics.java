@@ -81,8 +81,7 @@ public interface Analytics {
          * <p>
          * The key will be used as a Google Analytics "user property" key with the
          * associated value.
-         * </p>
-         *
+                 *
          * @param key   to associate
          * @param value to associate with the key
          * @return this builder
@@ -97,8 +96,7 @@ public interface Analytics {
          * <p>
          * The key will be used as a Google Analytics "event parameter" key with the
          * associated value.
-         * </p>
-         *
+                 *
          * @param key   to associate
          * @param value to associate with the key
          * @return this builder
@@ -176,7 +174,7 @@ public interface Analytics {
         /**
          * Specifies a custom URL to use when connecting to Google Analytics.
          * <p>
-         * By default, the URL "https://www.google-analytics.com/mp/collect"
+         * By default, the URL "<a href="https://www.google-analytics.com/mp/collect">HERE</a>"
          * will be used.
          *
          * @param url used for remote connection
