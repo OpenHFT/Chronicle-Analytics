@@ -70,7 +70,6 @@ final class HttpUtilTest {
         } finally {
             server.shutdown();
         }
-
     }
 
     @Test

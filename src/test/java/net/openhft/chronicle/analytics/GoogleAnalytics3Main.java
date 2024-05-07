@@ -33,6 +33,5 @@ public class GoogleAnalytics3Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 }
