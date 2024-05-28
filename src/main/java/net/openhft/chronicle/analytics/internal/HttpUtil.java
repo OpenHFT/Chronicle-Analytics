@@ -78,6 +78,7 @@ final class HttpUtil {
         @Override
         public void run() {
             try {
+                @SuppressWarnings("deprecation")
                 final URL url = new URL(urlString);
                 final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 // Do not linger if the connection is slow. Give up instead!
