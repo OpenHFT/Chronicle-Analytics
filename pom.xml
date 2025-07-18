@@ -22,7 +22,7 @@
     <parent>
         <groupId>net.openhft</groupId>
         <artifactId>java-parent-pom</artifactId>
-        <version>1.26.0</version>
+        <version>1.26.1</version>
         <relativePath />
     </parent>
     <artifactId>chronicle-analytics</artifactId>
@@ -36,7 +36,7 @@
             <dependency>
                 <groupId>net.openhft</groupId>
                 <artifactId>third-party-bom</artifactId>
-                <version>3.26.0</version>
+                <version>3.26.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -210,19 +210,6 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>Snapshot Repository</id>
-            <name>Snapshot Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-        </repository>
         <repository>
             <id>chronicle-enterprise-snapshots</id>
             <name>Snapshot Repository</name>
