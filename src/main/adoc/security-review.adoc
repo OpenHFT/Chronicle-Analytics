@@ -1,6 +1,7 @@
 = Chronicle Analytics – Security Review
 :lang: en-GB
 :toc:
+:sectnums:
 
 == Introduction
 
@@ -67,4 +68,3 @@ This document should be revisited whenever:
 * A new transport or analytics provider is added.
 * Additional metadata is captured or persisted.
 * Error handling, logging, or client-id generation behaviour changes materially.
-

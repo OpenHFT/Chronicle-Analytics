@@ -1,6 +1,7 @@
 = Chronicle Analytics – Project Requirements
 :lang: en-GB
 :toc:
+:sectnums:
 
 // -------------------------------------------------------------------
 // Identifier legend
@@ -11,7 +12,7 @@
 // IDs    = three digit sequence numbers per tag.
 // -------------------------------------------------------------------
 
-== 1 Scope
+== Scope
 
 Chronicle Analytics provides a lightweight client for emitting usage events to Google Analytics
 Universal Analytics (GA3) and Google Analytics 4 (GA4). It is designed for embedding inside other
@@ -21,7 +22,7 @@ and runtime overhead to a minimum.
 The requirements below define the minimum functionality expected from the module and the controls
 callers rely on when enabling analytics.
 
-== 2 Functional Requirements
+== Functional Requirements
 
 [cols="1,5,3",options="header"]
 |===
@@ -48,7 +49,7 @@ network traffic. |`MuteAnalyticsTest` verifies counter changes.
 deployments. |Unit test asserts setter round-trip.
 |===
 
-== 3 Non-Functional Requirements
+== Non-Functional Requirements
 
 [cols="1,5,3",options="header"]
 |===
@@ -70,14 +71,14 @@ consumers. |Empowers adopters to configure safely.
 |Maintains confidence in telemetry guardrails.
 |===
 
-== 4 External Interfaces & Dependencies
+== External Interfaces & Dependencies
 
 * Java Platform (minimum baseline matches parent BOM requirements).
 * Optional presence of JUnit 4 or JUnit 5 triggers muted mode by default.
 * Outbound HTTPS access to Google Analytics endpoints or a user-specified URL.
 * Local filesystem write access to the configured client-id persistence file.
 
-== 5 Assumptions & Out-of-Scope
+== Assumptions & Out-of-Scope
 
 * Chronicle Analytics does not guarantee delivery; upstream outages or network failures are logged
   only via the configured error logger.
