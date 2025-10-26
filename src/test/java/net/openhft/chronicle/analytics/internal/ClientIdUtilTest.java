@@ -1,7 +1,5 @@
 /*
- * Copyright 2016-2022 chronicle.software
- *
- *       https://chronicle.software
+ * Copyright 2016-2025 chronicle.software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +16,10 @@
 
 package net.openhft.chronicle.analytics.internal;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,40 +28,38 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ClientIdUtilTest {
 
-    private static final String FILE_NAME = "client.id";
+    @TempDir
+    java.nio.file.Path tempDir;
+
+    private java.nio.file.Path clientIdPath;
     private List<String> debugMessages;
 
     @BeforeEach
     void beforeEach() {
-        cleanupFile();
+        clientIdPath = tempDir.resolve("client.id");
         debugMessages = new ArrayList<>();
-    }
-
-    @AfterEach
-    void afterEach() {
-        cleanupFile();
     }
 
     @Test
     void acquireClientId() {
         // First time
-        final String clientId = FilesUtil.acquireClientId(FILE_NAME, debugMessages::add);
+        final String clientId = FilesUtil.acquireClientId(clientIdPath.toString(), debugMessages::add);
         assertDoesNotThrow(() -> UUID.fromString(clientId));
         assertEquals(1, debugMessages.size());
         final String msg = debugMessages.get(0);
         assertTrue(msg.contains("file not present"));
-        assertTrue(msg.contains(FILE_NAME));
+        assertTrue(msg.contains(clientIdPath.toString()));
 
         // Second time should give the same id
         final List<String> debugMessages2 = new ArrayList<>();
-        final String clientId2 = FilesUtil.acquireClientId(FILE_NAME, debugMessages2::add);
+        final String clientId2 = FilesUtil.acquireClientId(clientIdPath.toString(), debugMessages2::add);
         assertEquals(clientId, clientId2);
         assertTrue(debugMessages2.isEmpty());
     }
 
     @Test
     void acquireClientIdIllegalFile() {
-        final String illegalFileName = ".";
+        final String illegalFileName = tempDir.toString();
         final String clientId = FilesUtil.acquireClientId(illegalFileName, debugMessages::add);
         assertNotNull(clientId);
 
@@ -72,9 +67,5 @@ class ClientIdUtilTest {
         assertTrue(debugMessages.get(0).contains("file not present"));
         assertTrue(debugMessages.get(1).contains("Unable to create"));
 
-    }
-
-    private void cleanupFile() {
-        new File(FILE_NAME).delete();
     }
 }

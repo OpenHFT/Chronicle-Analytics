@@ -1,7 +1,5 @@
 /*
- * Copyright 2016-2022 chronicle.software
- *
- *       https://chronicle.software
+ * Copyright 2016-2025 chronicle.software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,6 +76,29 @@ final class HttpUtilTest {
         sender.run();
         assertFalse(errorResponses.isEmpty());
         assertTrue(debugResponses.isEmpty());
+    }
+
+    @Test
+    void sendUsesBackgroundExecutor() throws IOException, InterruptedException {
+        final MockWebServer server = new MockWebServer();
+        server.enqueue(new MockResponse().setBody(TEST_RESPONSE));
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        server.start();
+        try {
+            final HttpUrl url = server.url("mp/collect");
+            HttpUtil.send(url.url().toString(), "{}", errorResponses::add, msg -> {
+                debugResponses.add(msg);
+                latch.countDown();
+            });
+
+            assertTrue(latch.await(2, TimeUnit.SECONDS));
+            assertTrue(errorResponses.isEmpty());
+            assertEquals(singletonList(TEST_RESPONSE.replaceAll("\\s+", " ").trim()), debugResponses);
+        } finally {
+            server.shutdown();
+        }
     }
 
     @Test
