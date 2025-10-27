@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -99,12 +100,12 @@ enum FilesUtil {
     }
 
     private static Path lastPath() {
-        final Path home = Path.of(Optional.ofNullable(System.getProperty("user.home")).orElse(".")).toAbsolutePath().normalize();
+        final Path home = Paths.get(Optional.ofNullable(System.getProperty("user.home")).orElse(".")).toAbsolutePath().normalize();
         return home.resolve(CHRONICLE_ANALYTICS_LAST_FILE_NAME.substring(1));
     }
 
     private static Path sanitize(String candidate) {
-        Path path = Path.of(candidate);
+        Path path = Paths.get(candidate);
         for (Path element : path) {
             if ("..".equals(element.toString())) {
                 throw new IllegalArgumentException("Parent path segments are not allowed: " + candidate);

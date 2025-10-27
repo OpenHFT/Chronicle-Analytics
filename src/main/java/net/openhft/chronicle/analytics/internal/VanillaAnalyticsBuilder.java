@@ -18,6 +18,7 @@ package net.openhft.chronicle.analytics.internal;
 import net.openhft.chronicle.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -138,12 +139,12 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
 
     @Override
     public @NotNull Map<String, String> userProperties() {
-        return Map.copyOf(userProperties);
+        return new HashMap<>(userProperties);
     }
 
     @Override
     public @NotNull Map<String, String> eventParameters() {
-        return Map.copyOf(eventParameters);
+        return new HashMap<>(eventParameters);
     }
 
     @SuppressWarnings("unchecked")
