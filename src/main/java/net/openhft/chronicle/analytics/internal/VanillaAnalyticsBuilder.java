@@ -1,7 +1,5 @@
 /*
- * Copyright 2016-2020 chronicle.software
- *
- *       https://chronicle.software
+ * Copyright 2016-2025 chronicle.software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -140,14 +138,12 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
 
     @Override
     public @NotNull Map<String, String> userProperties() {
-        // ok because the builder cannot be reused
-        return userProperties;
+        return Map.copyOf(userProperties);
     }
 
     @Override
     public @NotNull Map<String, String> eventParameters() {
-        // ok because the builder cannot be reused
-        return eventParameters;
+        return Map.copyOf(eventParameters);
     }
 
     @SuppressWarnings("unchecked")

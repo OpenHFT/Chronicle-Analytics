@@ -1,7 +1,5 @@
 /*
- * Copyright 2016-2020 chronicle.software
- *
- *       https://chronicle.software
+ * Copyright 2016-2025 chronicle.software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +15,6 @@
  */
 package net.openhft.chronicle.analytics.internal;
 
-import net.openhft.chronicle.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -28,7 +25,7 @@ import static java.util.stream.Collectors.joining;
 import static net.openhft.chronicle.analytics.internal.JsonUtil.asElement;
 import static net.openhft.chronicle.analytics.internal.JsonUtil.jsonElement;
 
-final class GoogleAnalytics4 extends AbstractGoogleAnalytics implements Analytics {
+final class GoogleAnalytics4 extends AbstractGoogleAnalytics {
 
     GoogleAnalytics4(@NotNull final AnalyticsConfiguration configuration) {
         super(configuration);

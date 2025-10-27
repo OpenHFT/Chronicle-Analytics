@@ -1,7 +1,5 @@
 /*
- * Copyright 2016-2020 chronicle.software
- *
- *       https://chronicle.software
+ * Copyright 2016-2025 chronicle.software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +15,6 @@
  */
 package net.openhft.chronicle.analytics.internal;
 
-import net.openhft.chronicle.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
@@ -26,7 +23,7 @@ import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicInteger;
 
-final class GoogleAnalytics3 extends AbstractGoogleAnalytics implements Analytics {
+final class GoogleAnalytics3 extends AbstractGoogleAnalytics {
 
     private static final String URL_STRING = "https://www.google-analytics.com/collect";
 

@@ -1,7 +1,5 @@
 /*
- * Copyright 2016-2022 chronicle.software
- *
- *       https://chronicle.software
+ * Copyright 2016-2025 chronicle.software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +19,9 @@ package net.openhft.chronicle.analytics.internal;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -42,7 +40,7 @@ enum FilesUtil {
     // user's home directory. If that fails, a new random clientId
     // is generated and an attempt is made to save it in said file.
     static String acquireClientId(@NotNull final String clientIdFileName, @NotNull final Consumer<String> debugLogger) {
-        final Path path = Paths.get(clientIdFileName);
+        final Path path = sanitize(clientIdFileName);
         try {
             try (Stream<String> lines = Files.lines(path, UTF_8)) {
                 return lines
@@ -51,7 +49,7 @@ enum FilesUtil {
                         .orElseThrow(NoSuchElementException::new)
                         .toString();
             }
-        } catch (Exception e) {
+        } catch (IOException | UncheckedIOException | IllegalArgumentException | NoSuchElementException e) {
             debugLogger.accept("Client id file not present: " + path.toAbsolutePath() + ' ' + e);
         }
         final String id = UUID.randomUUID().toString();
@@ -70,7 +68,7 @@ enum FilesUtil {
                     .findFirst()
                     .map(Integer::parseInt)
                     .orElse(0);
-            final boolean same = (secondOfDay == currentSecondOfDay);
+            final boolean same = secondOfDay == currentSecondOfDay;
             if (!same) {
                 // We are on a new second so store the new second
                 touchLastContent(path);
@@ -101,10 +99,19 @@ enum FilesUtil {
     }
 
     private static Path lastPath() {
-        final String fileName = Optional.ofNullable(System.getProperty("user.home"))
-                .orElse(".") +
-                CHRONICLE_ANALYTICS_LAST_FILE_NAME;
-        return Paths.get(fileName);
+        final Path home = Path.of(Optional.ofNullable(System.getProperty("user.home")).orElse(".")).toAbsolutePath().normalize();
+        return home.resolve(CHRONICLE_ANALYTICS_LAST_FILE_NAME.substring(1));
+    }
+
+    private static Path sanitize(String candidate) {
+        Path path = Path.of(candidate);
+        for (Path element : path) {
+            if ("..".equals(element.toString())) {
+                throw new IllegalArgumentException("Parent path segments are not allowed: " + candidate);
+            }
+        }
+        Path normalized = path.normalize();
+        return normalized.isAbsolute() ? normalized : normalized.toAbsolutePath();
     }
 
 }

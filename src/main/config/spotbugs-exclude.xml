@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter
+    xmlns="https://github.com/spotbugs/filter/3.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/4.8.0/spotbugs/etc/findbugsfilter.xsd">
+
+    <!-- Add module-specific suppressions with justifications as required -->
+
+    <Match>
+        <Class name="~net\.openhft\.chronicle\.analytics\.internal\.HttpUtil\$Sender"/>
+        <Bug pattern="URLCONNECTION_SSRF_FD"/>
+        <Comment>ANALYTICS-SEC-201: HTTP client restricted to Chronicle analytics endpoints; SSRF remediation tracked separately.</Comment>
+    </Match>
+
+</FindBugsFilter>
