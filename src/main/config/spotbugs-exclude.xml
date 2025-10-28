@@ -12,4 +12,16 @@
         <Comment>ANALYTICS-SEC-201: HTTP client restricted to Chronicle analytics endpoints; SSRF remediation tracked separately.</Comment>
     </Match>
 
+    <Match>
+        <Class name="net.openhft.chronicle.analytics.internal.FilesUtil"/>
+        <Bug pattern="PATH_TRAVERSAL_IN"/>
+        <Comment>Client id path validated via sanitize(); remaining uses are constrained to the caller-controlled persistence location.</Comment>
+    </Match>
+
+    <Match>
+        <Class name="net.openhft.chronicle.analytics.internal.AbstractGoogleAnalytics"/>
+        <Bug pattern="PATH_TRAVERSAL_IN"/>
+        <Comment>Builder exposes client id file override; sanitize() enforces normalized, absolute paths before use.</Comment>
+    </Match>
+
 </FindBugsFilter>
