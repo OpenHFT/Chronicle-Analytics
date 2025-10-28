@@ -22,9 +22,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AnalyticsTest {
 
@@ -56,7 +54,7 @@ class AnalyticsTest {
 
     @Test
     void builder() {
-        Analytics.Builder builder= Analytics.builder(TEST_STRING, TEST_STRING);
+        Analytics.Builder builder = Analytics.builder(TEST_STRING, TEST_STRING);
         assertNotNull(builder);
     }
 }

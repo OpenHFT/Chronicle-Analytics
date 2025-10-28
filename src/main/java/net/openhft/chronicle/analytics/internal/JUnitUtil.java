@@ -22,7 +22,8 @@ import java.util.stream.Stream;
 
 final class JUnitUtil {
 
-    private JUnitUtil() {}
+    private JUnitUtil() {
+    }
 
     static boolean isJUnitAvailable() {
         return Stream.of("org.junit.jupiter.api.Test", "org.junit.Test")

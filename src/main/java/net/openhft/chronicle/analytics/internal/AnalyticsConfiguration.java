@@ -23,14 +23,24 @@ import java.util.function.Consumer;
 
 public interface AnalyticsConfiguration {
     @NotNull String measurementId();
+
     @NotNull String apiSecret();
+
     @NotNull Map<String, String> userProperties();
+
     @NotNull Map<String, String> eventParameters();
+
     @NotNull Consumer<String> errorLogger();
+
     @NotNull Consumer<String> debugLogger();
+
     long duration();
+
     int messages();
+
     @NotNull TimeUnit timeUnit();
+
     @NotNull String clientIdFileName();
+
     @NotNull String url();
 }

@@ -14,13 +14,10 @@
 
 == Scope
 
-Chronicle Analytics provides a lightweight client for emitting usage events to Google Analytics
-Universal Analytics (GA3) and Google Analytics 4 (GA4). It is designed for embedding inside other
-Chronicle libraries that want optional outbound telemetry while keeping dependencies, footprint,
-and runtime overhead to a minimum.
+Chronicle Analytics provides a lightweight client for emitting usage events to Google Analytics Universal Analytics (GA3) and Google Analytics 4 (GA4).
+It is designed for embedding inside other Chronicle libraries that want optional outbound telemetry while keeping dependencies, footprint, and runtime overhead to a minimum.
 
-The requirements below define the minimum functionality expected from the module and the controls
-callers rely on when enabling analytics.
+The requirements below define the minimum functionality expected from the module and the controls callers rely on when enabling analytics.
 
 == Functional Requirements
 
@@ -80,8 +77,6 @@ consumers. |Empowers adopters to configure safely.
 
 == Assumptions & Out-of-Scope
 
-* Chronicle Analytics does not guarantee delivery; upstream outages or network failures are logged
-  only via the configured error logger.
-* Aggregation, reporting dashboards, or offline storage are handled by Google Analytics or custom
-  infrastructure, not by this module.
+* Chronicle Analytics does not guarantee delivery; upstream outages or network failures are logged only via the configured error logger.
+* Aggregation, reporting dashboards, or offline storage are handled by Google Analytics or custom infrastructure, not by this module.
 * No additional instrumentation or sampling logic is provided beyond simple frequency limiting.

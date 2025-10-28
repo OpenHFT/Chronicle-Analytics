@@ -141,7 +141,7 @@ final class HttpUtilTest {
             @Override
             public @NotNull MockResponse dispatch(@NotNull RecordedRequest recordedRequest) {
                 int cnt = 0;
-                for (int i = 0; i < delayMs/latchPollMs; i++) {
+                for (int i = 0; i < delayMs / latchPollMs; i++) {
                     try {
                         if (countDownLatch.await(latchPollMs, TimeUnit.MILLISECONDS))
                             break;

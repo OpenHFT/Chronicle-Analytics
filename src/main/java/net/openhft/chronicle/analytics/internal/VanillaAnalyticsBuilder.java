@@ -116,12 +116,11 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
 
         if (JUnitUtil.isJUnitAvailable() && !reportDespiteJUnit)
             return MuteAnalytics.INSTANCE;
-        else
-            if (measurementId.startsWith("UA-")) {
-                return new GoogleAnalytics3(this);
-            } else {
-                return new GoogleAnalytics4(this);
-            }
+        else if (measurementId.startsWith("UA-")) {
+            return new GoogleAnalytics3(this);
+        } else {
+            return new GoogleAnalytics4(this);
+        }
     }
 
     // Accessors
@@ -159,7 +158,9 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     }
 
     @Override
-    public int messages() {return messages; }
+    public int messages() {
+        return messages;
+    }
 
     @Override
     public long duration() {

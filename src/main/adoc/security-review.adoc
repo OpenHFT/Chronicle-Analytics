@@ -5,21 +5,19 @@
 
 == Introduction
 
-Chronicle Analytics emits optional telemetry to Google Analytics. The library favours minimal
-dependencies and low-latency behaviour, which introduces several deliberate trade-offs. This review
-captures expected data flows, known risks, and the mitigations that callers or library maintainers
-must provide.
+Chronicle Analytics emits optional telemetry to Google Analytics.
+The library favours minimal dependencies and low-latency behaviour, which introduces several deliberate trade-offs.
+This review captures expected data flows, known risks, and the mitigations that callers or library maintainers must provide.
 
 == Data Flow Summary
 
-* `Analytics.sendEvent` assembles a small payload containing the event name, optional event
-  parameters, and any configured user properties.
+* `Analytics.sendEvent` assembles a small payload containing the event name, optional event parameters, and any configured user properties.
 * A client identifier is loaded from `${clientIdFileName}` (defaults to a hidden file in
-  `${user.home}`) and created if missing.
+`${user.home}`) and created if missing.
 * Google Analytics 3 requests use the Measurement Protocol via HTTPS POST to
-  `https://www.google-analytics.com/collect`.
+`https://www.google-analytics.com/collect`.
 * Google Analytics 4 requests build a JSON payload and POST to
-  `https://www.google-analytics.com/mp/collect` (overrideable through the builder).
+`https://www.google-analytics.com/mp/collect` (overrideable through the builder).
 * All HTTP dispatch happens on a single daemon thread; the caller does not await responses.
 
 == Known Risks & Mitigations
@@ -29,37 +27,34 @@ must provide.
 |Risk |Mitigation
 |Client identifier file is created in the user home directory and may reveal telemetry usage.
 |Document the location and allow overriding via `withClientIdFileName`. Clean up as part of
-  uninstallation if required.
+uninstallation if required.
 |Outbound HTTPS endpoint is configurable and could be pointed at an unexpected host.
 |Callers should only override the URL for trusted proxies. Use dependency injection to limit who can
-  supply builder configuration.
+supply builder configuration.
 |Event names and parameters are caller-provided strings and may include sensitive data.
 |Upstream libraries must scrub personally identifiable or confidential information before calling
-  the API. Provide configuration toggles to disable analytics at runtime.
+the API. Provide configuration toggles to disable analytics at runtime.
 |Asynchronous sender uses a shared single-thread executor – exceptions are only surfaced via the
-  error logger.
+error logger.
 |Supply a non no-op error logger in production so that I/O failures can be traced. Consider routing
-  to SLF4J or structured logging.
+to SLF4J or structured logging.
 |Lack of transport retries could drop events under transient network failure.
 |Accept the loss as part of the "best effort" contract. For critical metrics, integrate with a
-  higher-reliability telemetry pipeline instead.
+higher-reliability telemetry pipeline instead.
 |Builder currently relies on caller honouring `chronicle.analytics.disable=true`.
 |Downstream libraries must guard their own builder usage with a property check. Future work may
-  centralise the check inside `VanillaAnalyticsBuilder`.
+centralise the check inside `VanillaAnalyticsBuilder`.
 |JUnit detection suppresses analytics, but tests that manually enable reporting could leak events.
 |Ensure CI environments leave the default mute behaviour in place; only set `withReportDespiteJUnit`
-  for intentional integration tests targeting GA sandboxes.
+for intentional integration tests targeting GA sandboxes.
 |===
 
 == Operational Guidance
 
 * Configure the error and debug loggers to integrate with the host application logging framework.
-* When embedding inside other Chronicle projects, surface a visible opt-out knob that
-  sets `chronicle.analytics.disable=true` before the builder is invoked.
-* Regularly review filesystem permissions on the client-id file to ensure it is not world-readable on
-  shared hosts.
-* For geographically restricted deployments, validate that outbound HTTPS to the configured endpoint
-  is permitted; otherwise disable analytics.
+* When embedding inside other Chronicle projects, surface a visible opt-out knob that sets `chronicle.analytics.disable=true` before the builder is invoked.
+* Regularly review filesystem permissions on the client-id file to ensure it is not world-readable on shared hosts.
+* For geographically restricted deployments, validate that outbound HTTPS to the configured endpoint is permitted; otherwise disable analytics.
 
 == Review Cadence
 

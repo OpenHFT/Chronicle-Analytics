@@ -62,7 +62,7 @@ public interface Analytics {
      * The builder can only create one single Analytic instance.
      *
      * @param measurementId to use for reporting
-     * @param apiSecret to use for reporting
+     * @param apiSecret     to use for reporting
      * @return a new Builder that can be used to create an Analytic instance
      */
     @NotNull
