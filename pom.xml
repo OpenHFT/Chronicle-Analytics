@@ -63,13 +63,6 @@
             <artifactId>annotations</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs-annotations</artifactId>
-            <version>4.9.0</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
