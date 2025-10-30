@@ -105,14 +105,8 @@ enum FilesUtil {
     }
 
     private static Path sanitize(String candidate) {
-        Path path = Paths.get(candidate);
-        for (Path element : path) {
-            if ("..".equals(element.toString())) {
-                throw new IllegalArgumentException("Parent path segments are not allowed: " + candidate);
-            }
-        }
-        Path normalized = path.normalize();
-        return normalized.isAbsolute() ? normalized : normalized.toAbsolutePath();
+        Path normalized = Paths.get(candidate).normalize();
+        return normalized.isAbsolute() ? normalized : normalized.toAbsolutePath().normalize();
     }
 
 }

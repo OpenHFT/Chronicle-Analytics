@@ -20,6 +20,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -67,5 +69,31 @@ class ClientIdUtilTest {
         assertTrue(debugMessages.get(0).contains("file not present"));
         assertTrue(debugMessages.get(1).contains("Unable to create"));
 
+    }
+
+    @Test
+    void acquireClientIdAllowsParentSegments() throws Exception {
+        final String relativeName = "../client-id-parent-test";
+
+        final String originalUserDir = System.getProperty("user.dir");
+        Path targetFile = null;
+        try {
+            assertNotNull(tempDir.getParent(), "Temp directory must have a parent for this test");
+            System.setProperty("user.dir", tempDir.toString());
+            final Path resolved = java.nio.file.Paths.get(relativeName).normalize();
+            targetFile = resolved.isAbsolute() ? resolved : resolved.toAbsolutePath().normalize();
+            Files.deleteIfExists(targetFile);
+            final List<String> debugMessagesLocal = new ArrayList<>();
+            final String clientId = FilesUtil.acquireClientId(relativeName, debugMessagesLocal::add);
+            assertDoesNotThrow(() -> UUID.fromString(clientId));
+            assertTrue(Files.exists(targetFile));
+            assertFalse(debugMessagesLocal.isEmpty());
+            assertTrue(debugMessagesLocal.get(0).contains("file not present"));
+        } finally {
+            System.setProperty("user.dir", originalUserDir);
+            if (targetFile != null) {
+                Files.deleteIfExists(targetFile);
+            }
+        }
     }
 }
