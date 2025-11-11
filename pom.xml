@@ -21,6 +21,11 @@
     <description>Chronicle-Analytics</description>
     <packaging>bundle</packaging>
 
+    <properties>
+        <jacoco.line.coverage>0.7</jacoco.line.coverage>
+        <jacoco.branch.coverage>0.6</jacoco.branch.coverage>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -34,11 +39,6 @@
     </dependencyManagement>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-        </dependency>
 
         <!-- test dependencies -->
         <dependency>
@@ -77,6 +77,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -171,31 +176,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-            </plugin>
-
         </plugins>
     </build>
 
