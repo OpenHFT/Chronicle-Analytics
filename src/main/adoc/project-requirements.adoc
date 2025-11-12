@@ -1,0 +1,82 @@
+= Chronicle Analytics – Project Requirements
+:lang: en-GB
+:toc:
+:sectnums:
+
+// -------------------------------------------------------------------
+// Identifier legend
+// -------------------------------------------------------------------
+// Scope  = CA  (Chronicle Analytics)
+// Tags   = FN (Functional), NF-P (Performance), NF-O (Operational),
+//          DOC (Documentation), TEST (Testing), SEC (Security)
+// IDs    = three digit sequence numbers per tag.
+// -------------------------------------------------------------------
+
+== Scope
+
+Chronicle Analytics provides a lightweight client for emitting usage events to Google Analytics Universal Analytics (GA3) and Google Analytics 4 (GA4).
+It is designed for embedding inside other Chronicle libraries that want optional outbound telemetry while keeping dependencies, footprint, and runtime overhead to a minimum.
+
+The requirements below define the minimum functionality expected from the module and the controls callers rely on when enabling analytics.
+
+== Functional Requirements
+
+[cols="1,5,3",options="header"]
+|===
+|ID |Description |Verification
+|CA-FN-001 |Expose `Analytics` interface offering `sendEvent(String)` and
+`sendEvent(String, Map<String,String>)`. |Unit tests (`AnalyticsTest`) cover default delegation.
+|CA-FN-002 |Provide `Analytics.builder(String measurementId, String apiSecret)` returning a
+single-use builder that produces an `Analytics` instance. |Unit test exercises build flow.
+|CA-FN-003 |Ensure the builder supports user properties, event parameters, URL override, custom
+loggers, frequency limiting, and client-id file name override. |`VanillaAnalyticsBuilderTest` exercises each mutator.
+|CA-FN-004 |Auto-select GA3 transport when the measurement id starts with `UA-` and GA4 transport
+otherwise. |Unit test forces both branches.
+|CA-FN-005 |Detect active JUnit classes on the classpath and return the mute implementation unless
+`withReportDespiteJUnit()` is set. |Test covers default mute behaviour.
+|CA-FN-006 |Persist a stable client identifier across runs using the configured client-id file and
+create one when missing. |`ClientIdUtilTest` exercises generation and reuse.
+|CA-FN-007 |Respect `withFrequencyLimit(int,long,TimeUnit)` by dropping events beyond the configured
+rate within the duration window. |`GoogleAnalyticsTest` covers rate limiting reset and cap.
+|CA-FN-008 |HTTP publishing must be asynchronous and never block the caller thread beyond the
+attempt-to-send eligibility checks. |Implementation delegates to single-thread executor.
+|CA-FN-009 |Provide a mute implementation that records drops for testing while emitting no
+network traffic. |`MuteAnalyticsTest` verifies counter changes.
+|CA-FN-010 |Surface builder overrides for custom GA endpoint URLs to support on-premise or proxy
+deployments. |Unit test asserts setter round-trip.
+|===
+
+== Non-Functional Requirements
+
+[cols="1,5,3",options="header"]
+|===
+|ID |Requirement |Rationale
+|CA-NF-P-001 |Invoking `sendEvent` must add no more than a few microseconds of overhead when the
+event is rejected by throttling or muted (no network call). |Library must remain safe to call on
+hot paths.
+|CA-NF-P-002 |All network I/O is delegated to a daemon thread to avoid blocking shutdown. |Prevents
+Analytics from extending application lifetime.
+|CA-NF-O-001 |The client-id persistence file path defaults to `${user.home}/.chronicle.analytics.client.id`
+and must be configurable. |Allows relocation for locked-down environments.
+|CA-NF-O-002 |Analytics honours the system property `chronicle.analytics.disable=true` (via caller
+contract) and must continue to operate safely if callers instantiate the builder regardless. |Ensures
+callers can globally opt out.
+|CA-NF-SEC-001 |HTTP requests must be sent over `https` by default. |Protect event payloads in transit.
+|CA-DOC-001 |Document builder options, mute behaviour, and opt-out controls for downstream
+consumers. |Empowers adopters to configure safely.
+|CA-TEST-001 |Unit tests exercise the main builder pathways, frequency limiting, and mute behaviour.
+|Maintains confidence in telemetry guardrails.
+|===
+
+== External Interfaces & Dependencies
+
+* Java Platform (minimum baseline matches parent BOM requirements).
+* Optional presence of JUnit 4 or JUnit 5 triggers muted mode by default.
+* Outbound HTTPS access to Google Analytics endpoints or a user-specified URL.
+* Local filesystem write access to the configured client-id persistence file.
+
+== Assumptions & Out-of-Scope
+
+* Chronicle Analytics does not guarantee delivery; upstream outages or network failures are logged only via the configured error logger.
+* Aggregation, reporting dashboards, or offline storage are handled by Google Analytics or custom infrastructure, not by this module.
+* No additional instrumentation or sampling logic is provided beyond simple frequency limiting.
