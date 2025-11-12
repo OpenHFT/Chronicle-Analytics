@@ -22,8 +22,8 @@
     <packaging>bundle</packaging>
 
     <properties>
-        <jacoco.line.coverage>0.7</jacoco.line.coverage>
-        <jacoco.branch.coverage>0.6</jacoco.branch.coverage>
+        <jacoco.line.coverage>0.89</jacoco.line.coverage>
+        <jacoco.branch.coverage>0.72</jacoco.branch.coverage>
     </properties>
 
     <dependencyManagement>
