@@ -104,12 +104,13 @@ final class HttpUtilTest {
         server.setDispatcher(new Dispatcher() {
             @Override
             public @NotNull MockResponse dispatch(@NotNull RecordedRequest recordedRequest) {
-                int cnt = 0;
                 for (int i = 0; i < delayMs/latchPollMs; i++) {
                     try {
                         if (countDownLatch.await(latchPollMs, TimeUnit.MILLISECONDS))
                             break;
                     } catch (InterruptedException ignore) {
+                        Thread.currentThread().interrupt();
+                        break;
                     }
                 }
                 return new MockResponse().setBody(TEST_RESPONSE);

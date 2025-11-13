@@ -15,6 +15,7 @@ import java.util.function.Function;
 
 import static net.openhft.chronicle.analytics.internal.FilesUtil.removeLastUsedFileTimeStampSecond;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 //@Disabled(/* failing test https://teamcity.chronicle.software/buildConfiguration/Chronicle_BuildAll_Build/677499?hideProblemsFromDependencies=false&hideTestsFromDependencies=false&expandBuildChangesSection=true&expandBuildTestsSection=true */)
 final class GoogleAnalyticsTest {
@@ -92,7 +93,7 @@ final class GoogleAnalyticsTest {
         /* This test would fail if run concurrently from two different JVMs,
         therefore it's only run if the googleAnalytics instance is not muted (update in agreement with Rob)
         */
-        Assume.assumeFalse(googleAnalytics.muted);
+        assumeFalse(googleAnalytics.muted);
         for (int i = 0; i < messages; i++) {
             assertTrue(googleAnalytics.attemptToSend(), "Round " + i);
         }
@@ -138,7 +139,7 @@ final class GoogleAnalyticsTest {
         final int lastSecond = LocalTime.now().toSecondOfDay();
         // Wait for a fresh second
         while (LocalTime.now().toSecondOfDay() == lastSecond) {
-            // spin wait
+            Thread.yield();
         }
     }
 
