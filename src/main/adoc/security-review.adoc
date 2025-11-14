@@ -2,6 +2,7 @@
 :lang: en-GB
 :toc:
 :sectnums:
+:source-highlighter: rouge
 
 == Introduction
 
