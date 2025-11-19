@@ -149,7 +149,9 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
     }
 
     @Override
-    public int messages() {return messages; }
+    public int messages() {
+        return messages;
+    }
 
     @Override
     public long duration() {

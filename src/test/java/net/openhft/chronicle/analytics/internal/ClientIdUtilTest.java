@@ -6,8 +6,11 @@ package net.openhft.chronicle.analytics.internal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -60,6 +63,10 @@ class ClientIdUtilTest {
     }
 
     private void cleanupFile() {
-        new File(FILE_NAME).delete();
+        try {
+            Files.deleteIfExists(new File(FILE_NAME).toPath());
+        } catch (IOException e) {
+            LoggerFactory.getLogger(getClass()).warn("Unable to delete file: " + FILE_NAME, e);
+        }
     }
 }

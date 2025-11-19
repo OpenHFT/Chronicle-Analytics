@@ -45,10 +45,6 @@ final class GoogleAnalytics3 extends AbstractGoogleAnalytics implements Analytic
                 .add("an=" + urlEncode(configuration().apiSecret())) // Application Name
                 .add("av=" + urlEncode(version)); // Application version
 
-        /*
-        eventType.sessionControl()
-                .ifPresent(sc -> payload.add("sc=" + sc)); // Session control like "start" and "end" */
-
         final Map<String, String> combined = new LinkedHashMap<>(eventParameters);
         combined.putAll(userProperties);
 
