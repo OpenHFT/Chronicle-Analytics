@@ -2,12 +2,12 @@
 Per Minborg
 
 :toc:
+:lang: en-GB
 :toclevels: 4
 :css-signature: demo
 :toc-placement: macro
-:toc-title: Table of contents
-:lang: en-GB
 :source-highlighter: rouge
+:toc-title: Table of contents
 
 image:https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics/badge.svg[Maven Central,link=https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics]
 image:https://javadoc-badge.appspot.com/net.openhft/chronicle-analytics.svg?label=javadoc[JavaDoc,link=https://www.javadoc.io/doc/net.openhft/chronicle-analytics]

@@ -12,6 +12,14 @@ import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * {@link Analytics} implementation that sends events to the Google Analytics 3 (Universal Analytics)
+ * endpoint.
+ *
+ * <p>Instances format events using the measurement protocol v1 and dispatch them asynchronously via
+ * {@link HttpUtil#send(String, String, java.util.function.Consumer, java.util.function.Consumer)}.
+ * They share the throttling and muting behaviour provided by {@link AbstractGoogleAnalytics}.
+ */
 final class GoogleAnalytics3 extends AbstractGoogleAnalytics implements Analytics {
 
     private static final String URL_STRING = "https://www.google-analytics.com/collect";

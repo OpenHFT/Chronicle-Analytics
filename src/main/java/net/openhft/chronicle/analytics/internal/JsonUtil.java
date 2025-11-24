@@ -3,6 +3,12 @@
  */
 package net.openhft.chronicle.analytics.internal;
 
+/**
+ * Minimal JSON rendering helpers used by the analytics implementations.
+ *
+ * <p>This utility focuses on the small subset of JSON needed to construct Google Analytics
+ * payloads. It provides simple escaping and element rendering rather than a full JSON library.
+ */
 final class JsonUtil {
 
     private static final String NL = String.format("%n");

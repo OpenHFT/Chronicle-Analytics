@@ -9,6 +9,13 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+/**
+ * Immutable configuration exposed to analytics implementations.
+ * <p>
+ * Provides backend credentials, default user and event properties, logging hooks and rate limiting
+ * parameters. {@link VanillaAnalyticsBuilder} implements this interface so the built analytics
+ * instance can reuse the same configuration snapshot.
+ */
 public interface AnalyticsConfiguration {
     @NotNull String measurementId();
     @NotNull String apiSecret();

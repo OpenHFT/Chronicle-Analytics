@@ -18,6 +18,14 @@ import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * Internal file utilities used by the analytics subsystem.
+ *
+ * <p>This helper is responsible for persisting and reusing a client identifier and a coarse
+ * "last used" timestamp in small files under the user's home directory. These values are used to
+ * de-duplicate analytics reporting across JVM restarts and to reduce the chance of many processes
+ * emitting events simultaneously.
+ */
 enum FilesUtil {
     ; // none
 

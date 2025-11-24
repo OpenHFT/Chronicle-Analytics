@@ -12,6 +12,18 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+/**
+ * Default {@link Analytics.Builder} and {@link AnalyticsConfiguration} implementation.
+ *
+ * <p>This builder collects measurement identifiers, credentials, user properties, event parameters,
+ * and simple rate limiting settings before constructing an {@link Analytics} instance. Depending on
+ * the configured measurement identifier it will create either a {@link GoogleAnalytics3} or
+ * {@link GoogleAnalytics4} implementation, or a {@link MuteAnalytics} instance when tests are
+ * detected via {@link JUnitUtil}.
+ *
+ * <p>The builder is single use; once {@link #build()} has been called further modifications will
+ * result in an {@link IllegalStateException}.
+ */
 public final class VanillaAnalyticsBuilder implements Analytics.Builder, AnalyticsConfiguration {
 
     private boolean built;
