@@ -99,5 +99,4 @@ enum FilesUtil {
                 CHRONICLE_ANALYTICS_LAST_FILE_NAME;
         return Paths.get(fileName);
     }
-
 }

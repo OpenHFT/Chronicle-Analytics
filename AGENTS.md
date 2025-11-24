@@ -1,7 +1,6 @@
 # Chronicle-Analytics AGENTS
 
-Follow repository `AGENTS.md` and root `canonical-AGENTS.md` for base rules; this file adds Chronicle-Analytics specifics.
-
+Follow repository `AGENTS.md` for base rules; this file adds Chronicle-Analytics specifics.
 - Module purpose: lightweight client for emitting optional usage telemetry to Google Analytics (GA3/GA4) with minimal overhead.
 - Durable docs live in `src/main/docs/` with the landing page at `README.adoc`.
 - Build commands: full build `mvn -q clean verify`; module-only without tests `mvn -pl Chronicle-Analytics -am -DskipTests install`.
@@ -170,4 +169,3 @@ section:: Top Level Section
 ### Emphasis and Bold Text
 
 In AsciiDoc, an underscore `_` is _emphasis_; `*text*` is *bold*.
-
