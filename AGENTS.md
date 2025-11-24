@@ -1,4 +1,15 @@
-# Guidance for AI agents, bots, and humans contributing to Chronicle Software's OpenHFT projects.
+# Chronicle-Analytics AGENTS
+
+Follow repository `AGENTS.md` and root `canonical-AGENTS.md` for base rules; this file adds Chronicle-Analytics specifics.
+
+- Module purpose: lightweight client for emitting optional usage telemetry to Google Analytics (GA3/GA4) with minimal overhead.
+- Durable docs live in `src/main/docs/` with the landing page at `README.adoc`.
+- Build commands: full build `mvn -q clean verify`; module-only without tests `mvn -pl Chronicle-Analytics -am -DskipTests install`.
+- Quality gates: keep Checkstyle/SpotBugs clean; ensure telemetry is optional and disabled by default unless explicitly configured; avoid blocking network calls on hot paths.
+- Documentation: maintain Nine-Box IDs in `src/main/docs/project-requirements.adoc` and link decisions/tests to them; British English, ASCII/ISO-8859-1, `:source-highlighter: rouge`.
+- Guardrails: treat outbound analytics as untrusted/optional; document any new configuration flags or data fields in the security review; call out security-impacting changes (TLS, identifiers, retention).
+
+## Guidance for AI agents, bots, and humans contributing to Chronicle Software's OpenHFT projects.
 
 LLM-based agents can accelerate development only if they respect our house rules. This file tells you:
 
@@ -159,3 +170,4 @@ section:: Top Level Section
 ### Emphasis and Bold Text
 
 In AsciiDoc, an underscore `_` is _emphasis_; `*text*` is *bold*.
+
