@@ -232,10 +232,61 @@ Builder automatically selects implementation based on prefix.
 - **HTTPS by default**: Transport security enabled
 - **Error logging**: Supply non-no-op error logger for production debugging
 
+## Code Quality Standards
+
+### Static Analysis
+
+```bash
+# Run Checkstyle (baseline ruleset)
+mvn -Dcheckstyle.config.location=net/openhft/quality/checkstyle27/chronicle-baseline-checkstyle.xml \
+    -Dcheckstyle.skip=false checkstyle:check
+
+# Run SpotBugs (Max effort, Low threshold)
+mvn -q -Dspotbugs.effort=Max -Dspotbugs.threshold=Low \
+    com.github.spotbugs:spotbugs-maven-plugin:spotbugs
+```
+
+**Status:** Chronicle-Analytics maintains zero Checkstyle and SpotBugs violations.
+
 ## Maven Profiles
 
 - **java11**: Excludes service files for Java 11+ JPMS builds
 - **quality**: Runs Checkstyle and SpotBugs (activated on Java 11+)
+
+## OSGi Support
+
+The library is built as an OSGi bundle with:
+- Bundle-SymbolicName: `net.openhft.chronicle-analytics`
+- Multi-Release manifest entry for Java 9+ modules
+- Optional import: `software.chronicle.enterprise.analytics`
+
+## Disabling Analytics
+
+Applications can disable Chronicle-Analytics via:
+
+### Maven exclusion:
+```xml
+<dependency>
+    <groupId>net.openhft</groupId>
+    <artifactId>chronicle-analytics</artifactId>
+    <version>0.EMPTY</version>
+</dependency>
+```
+
+### Gradle exclusion:
+```groovy
+configurations {
+    implementation {
+        exclude group: 'net.openhft', module: 'chronicle-analytics'
+    }
+}
+```
+
+## Parent POM
+
+- Parent: `net.openhft:java-parent-pom:1.27ea1`
+- BOM: `net.openhft:third-party-bom:3.27ea7`
+- Version: `2.27ea2-SNAPSHOT`
 
 ## Real-Time Documentation
 
@@ -245,3 +296,10 @@ When making changes:
 2. Keep documentation, tests, and code synchronised
 3. Small commits: one requirement or coherent change per commit
 4. Documentation should be precise enough for clean-room re-implementation
+
+## Additional Resources
+
+- **JavaDocs:** https://www.javadoc.io/doc/net.openhft/chronicle-analytics
+- **Maven Central:** https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics
+- **GitHub Issues:** https://github.com/OpenHFT/Chronicle-Analytics/issues
+- **Nexus Repository:** https://nexus.chronicle.software/
