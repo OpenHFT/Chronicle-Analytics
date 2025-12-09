@@ -28,6 +28,7 @@ final class GoogleAnalytics3 extends AbstractGoogleAnalytics implements Analytic
         super(configuration);
     }
 
+    @Override
     void httpSend(@NotNull String eventName, @NotNull final Map<String, String> eventParameters) {
         final String body = bodyFor(eventName, clientId(), eventParameters, configuration().userProperties());
         HttpUtil.send(URL_STRING, body, configuration().errorLogger(), configuration().debugLogger());

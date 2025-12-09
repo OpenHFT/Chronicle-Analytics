@@ -70,6 +70,7 @@ final class GoogleAnalytics3Test {
         assertFalse(merged.containsKey("app_version"));
     }
 
+    @SuppressWarnings("PMD.TestClassWithoutTestCases")
     private static final class TestAnalyticsConfiguration implements AnalyticsConfiguration {
 
         private final String measurementId;

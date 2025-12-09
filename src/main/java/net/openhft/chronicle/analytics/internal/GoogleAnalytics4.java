@@ -28,6 +28,7 @@ final class GoogleAnalytics4 extends AbstractGoogleAnalytics implements Analytic
         super(configuration);
     }
 
+    @Override
     void httpSend(@NotNull String eventName, @NotNull final Map<String, String> eventParameters) {
         final String url = configuration().url() + "?measurement_id=" + urlEncode(configuration().measurementId()) + "&api_secret=" + urlEncode(configuration().apiSecret());
         final String json = jsonFor(eventName, clientId(), eventParameters, configuration().userProperties());
