@@ -160,6 +160,9 @@ public final class VanillaAnalyticsBuilder implements Analytics.Builder, Analyti
         return (Consumer<String>) debugLogger;
     }
 
+    /**
+     * Returns how many analytics events to batch before sending.
+     */
     @Override
     public int messages() {
         return messages;
