@@ -29,6 +29,8 @@ public interface Analytics {
      * Depending on settings and other conditions, the event may or may not be
      * sent upstream. For example, some implementations may
      * send a limited number of upstream events per time unit.
+     *
+     * @param name event name to record
      */
     default void sendEvent(@NotNull String name) {
         sendEvent(name, Collections.emptyMap());
@@ -41,6 +43,9 @@ public interface Analytics {
      * Depending on settings and other conditions, the event may or may not be
      * sent upstream. For example, some implementations may
      * send a limited number of upstream events per time unit.
+     *
+     * @param name                       event name to record
+     * @param additionalEventParameters  extra parameters to attach
      */
     void sendEvent(@NotNull String name, @NotNull Map<String, String> additionalEventParameters);
 
@@ -58,6 +63,9 @@ public interface Analytics {
         return new VanillaAnalyticsBuilder(measurementId, apiSecret);
     }
 
+    /**
+     * Builder for {@link Analytics} instances.
+     */
     interface Builder {
 
         /**
