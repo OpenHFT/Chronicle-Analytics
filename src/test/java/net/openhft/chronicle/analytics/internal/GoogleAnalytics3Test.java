@@ -35,7 +35,7 @@ final class GoogleAnalytics3Test {
         final Map<String, String> userProperties = new LinkedHashMap<>();
         userProperties.put("userKey", "userValue");
 
-        final TestAnalyticsConfiguration configuration = new TestAnalyticsConfiguration(
+        final AnalyticsConfigurationStub configuration = new AnalyticsConfigurationStub(
                 "UA-TEST-123",
                 "secret",
                 userProperties,
@@ -59,19 +59,18 @@ final class GoogleAnalytics3Test {
 
         final String payload = (String) bodyFor.invoke(analytics, "boot", "client-123", merged, userProperties);
 
-        assertTrue(payload.contains("tid=UA-TEST-123"));
-        assertTrue(payload.contains("cid=client-123"));
-        assertTrue(payload.contains("cd=boot"));
-        assertTrue(payload.contains("an=secret"));
-        assertTrue(payload.contains("av=9.9.9"));
-        assertTrue(payload.contains("cd1=builderValue"));
-        assertTrue(payload.contains("cd2=extraValue"));
-        assertTrue(payload.contains("cd3=userValue"));
-        assertFalse(merged.containsKey("app_version"));
+        assertTrue(payload.contains("tid=UA-TEST-123"), "payload contains tracking id");
+        assertTrue(payload.contains("cid=client-123"), "payload contains client id");
+        assertTrue(payload.contains("cd=boot"), "payload contains event name");
+        assertTrue(payload.contains("an=secret"), "payload contains app name");
+        assertTrue(payload.contains("av=9.9.9"), "payload contains app version");
+        assertTrue(payload.contains("cd1=builderValue"), "payload contains builder event parameter");
+        assertTrue(payload.contains("cd2=extraValue"), "payload contains additional event parameter");
+        assertTrue(payload.contains("cd3=userValue"), "payload contains user property");
+        assertFalse(merged.containsKey("app_version"), "bodyFor removes app_version from merged map");
     }
 
-    @SuppressWarnings("PMD.TestClassWithoutTestCases")
-    private static final class TestAnalyticsConfiguration implements AnalyticsConfiguration {
+    private static final class AnalyticsConfigurationStub implements AnalyticsConfiguration {
 
         private final String measurementId;
         private final String apiSecret;
@@ -79,7 +78,7 @@ final class GoogleAnalytics3Test {
         private final Map<String, String> eventParameters;
         private final String clientIdFileName;
 
-        private TestAnalyticsConfiguration(@NotNull final String measurementId,
+        private AnalyticsConfigurationStub(@NotNull final String measurementId,
                                            @NotNull final String apiSecret,
                                            @NotNull final Map<String, String> userProperties,
                                            @NotNull final Map<String, String> eventParameters,

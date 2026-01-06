@@ -47,7 +47,7 @@ final class GoogleAnalyticsTest {
         final String actual = GoogleAnalytics4.jsonFor("started", "123", eventParameters, userProperties);
 
         assertEquals(expected, actual.replace('"', '\'')
-                .replace("\r\n", "\n"));
+                .replace("\r\n", "\n"), "jsonFor renders expected payload");
     }
 
     @Test
@@ -62,7 +62,7 @@ final class GoogleAnalyticsTest {
         final String expected = String.format("mapKey_A:mapValue_1,%nmapKey_B:mapValue_2,%nmapKey_C:mapValue_4");
         final String actual = GoogleAnalytics4.renderMap(map, mapper);
 
-        assertEquals(expected, actual);
+        assertEquals(expected, actual, "renderMap joins formatted entries");
     }
 
     @Test
@@ -73,9 +73,9 @@ final class GoogleAnalyticsTest {
                 .withReportDespiteJUnit()
                 .build();
 
-        assertTrue(googleAnalytics.attemptToSend());
-        assertTrue(googleAnalytics.attemptToSend());
-        assertFalse(googleAnalytics.attemptToSend());
+        assertTrue(googleAnalytics.attemptToSend(), "first send allowed");
+        assertTrue(googleAnalytics.attemptToSend(), "second send allowed");
+        assertFalse(googleAnalytics.attemptToSend(), "frequency limit blocks third send");
     }
 
     @Test
@@ -94,9 +94,9 @@ final class GoogleAnalyticsTest {
         */
         assumeFalse(googleAnalytics.muted);
         for (int i = 0; i < messages; i++) {
-            assertTrue(googleAnalytics.attemptToSend(), "Round " + i);
+            assertTrue(googleAnalytics.attemptToSend(), "attemptToSend() should succeed for message " + (i + 1) + " of " + messages + " within frequency limit");
         }
-        assertFalse(googleAnalytics.attemptToSend());
+        assertFalse(googleAnalytics.attemptToSend(), "attemptToSend() should fail when exceeding frequency limit of " + messages + " messages per " + duration + " " + timeUnit.toString().toLowerCase());
         try {
             Thread.sleep(timeUnit.toMillis(duration) + 100);
         } catch (InterruptedException ignored) {
@@ -104,9 +104,9 @@ final class GoogleAnalyticsTest {
         }
         // Hurray! We've got more messages!
         for (int i = 0; i < messages; i++) {
-            assertTrue(googleAnalytics.attemptToSend());
+            assertTrue(googleAnalytics.attemptToSend(), "attemptToSend() should succeed for message " + (i + 1) + " of " + messages + " after frequency limit window reset");
         }
-        assertFalse(googleAnalytics.attemptToSend());
+        assertFalse(googleAnalytics.attemptToSend(), "attemptToSend() should fail when exceeding post-reset frequency limit of " + messages + " messages per " + duration + " " + timeUnit.toString().toLowerCase());
     }
 
     @Test
@@ -126,10 +126,10 @@ final class GoogleAnalyticsTest {
                     .withReportDespiteJUnit()
                     .build();
 
-            assertTrue(googleAnalytics.attemptToSend());
+            assertTrue(googleAnalytics.attemptToSend(), "attemptToSend() should succeed for first GoogleAnalytics4 instance within current second");
             // Because googleAnalytics2 was created on the same second as the previous,
             // no send should be made
-            assertFalse(googleAnalytics2.attemptToSend());
+            assertFalse(googleAnalytics2.attemptToSend(), "attemptToSend() should fail for second GoogleAnalytics4 instance created in same second due to last-used file timestamp");
 
         }
     }

@@ -50,8 +50,8 @@ final class HttpUtilTest {
 
             sender.run();
 
-            assertTrue(errorResponses.isEmpty());
-            assertEquals(singletonList(TEST_RESPONSE.replaceAll("\\s+", " ").trim()), debugResponses);
+            assertTrue(errorResponses.isEmpty(), "successful send records no errors");
+            assertEquals(singletonList(TEST_RESPONSE.replaceAll("\\s+", " ").trim()), debugResponses, "successful send records response");
         } finally {
             server.shutdown();
         }
@@ -61,8 +61,8 @@ final class HttpUtilTest {
     void sendIllegalURL() {
         final HttpUtil.Sender sender = new HttpUtil.Sender("sdjkbhh131921gavsbjaj1j11jg1gvaskaj", "{}", errorResponses::add, debugResponses::add);
         sender.run();
-        assertFalse(errorResponses.isEmpty());
-        assertTrue(debugResponses.isEmpty());
+        assertFalse(errorResponses.isEmpty(), "invalid URL records an error");
+        assertTrue(debugResponses.isEmpty(), "invalid URL records no debug responses");
     }
 
     @Test
@@ -70,8 +70,8 @@ final class HttpUtilTest {
         final List<String> logMessages = new ArrayList<>();
         final String expected = "A+%25%40%26%5Ea";
         final String actual = HttpUtil.urlEncode("A %@&^a", logMessages::add);
-        assertEquals(expected, actual);
-        assertTrue(logMessages.isEmpty());
+        assertEquals(expected, actual, "urlEncode encodes reserved characters");
+        assertTrue(logMessages.isEmpty(), "urlEncode records no log messages");
     }
 
     // These test below are here to make sure that the Sender always completes
@@ -80,8 +80,8 @@ final class HttpUtilTest {
     void malformedURL() {
         final HttpUtil.Sender sender = new HttpUtil.Sender("euhgu23723fvx27ef327f_very_unlikely_to_ever_exist", "{}", errorResponses::add, debugResponses::add);
         sender.run();
-        assertEquals(1, errorResponses.size());
-        assertTrue(errorResponses.get(0).contains("MalformedURLException"));
+        assertEquals(1, errorResponses.size(), "malformed URL records one error");
+        assertTrue(errorResponses.get(0).contains("MalformedURLException"), "error message includes MalformedURLException");
     }
 
     @Test
@@ -89,9 +89,9 @@ final class HttpUtilTest {
         // the address must have a dot . at the end or it can be assumed to be an unqualified domain name.
         final HttpUtil.Sender sender = new HttpUtil.Sender("http://euhgu23723fvx27ef327f.very.unlikely.to.ever.exist.", "{}", errorResponses::add, debugResponses::add);
         sender.run();
-        assertEquals(1, errorResponses.size());
+        assertEquals(1, errorResponses.size(), "unknown host records one error");
         String msg = errorResponses.get(0);
-        assertTrue(msg.contains("UnknownHostException"));
+        assertTrue(msg.contains("UnknownHostException"), "error message includes UnknownHostException");
     }
 
     @Test
@@ -125,8 +125,8 @@ final class HttpUtilTest {
             sender.run();
             countDownLatch.countDown();
 
-            assertEquals(1, errorResponses.size());
-            assertTrue(errorResponses.get(0).contains("SocketTimeoutException"));
+            assertEquals(1, errorResponses.size(), "timeout records one error");
+            assertTrue(errorResponses.get(0).contains("SocketTimeoutException"), "error message includes SocketTimeoutException");
         } finally {
             server.shutdown();
         }

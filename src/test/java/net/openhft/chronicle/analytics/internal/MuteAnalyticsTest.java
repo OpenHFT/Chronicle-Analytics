@@ -19,6 +19,6 @@ final class MuteAnalyticsTest {
         analytics.sendEvent("a");
         analytics.sendEvent("a", Collections.emptyMap());
         // keep Sonar happy
-        assertEquals(2, MuteAnalytics.INSTANCE.mutedEvents - events);
+        assertEquals(2, MuteAnalytics.INSTANCE.mutedEvents - events, "mute increments event counter");
     }
 }

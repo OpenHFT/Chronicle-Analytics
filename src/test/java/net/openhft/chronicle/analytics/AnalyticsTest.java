@@ -20,12 +20,12 @@ class AnalyticsTest {
         final Analytics analytics = (name, additionalEventParameters) -> sendName.set(name);
 
         analytics.sendEvent(TEST_STRING);
-        assertEquals(TEST_STRING, sendName.get());
+        assertEquals(TEST_STRING, sendName.get(), "sendEvent forwards name");
     }
 
     @Test
     void builder() {
         Analytics.Builder builder= Analytics.builder(TEST_STRING, TEST_STRING);
-        assertNotNull(builder);
+        assertNotNull(builder, "builder() returns a builder");
     }
 }

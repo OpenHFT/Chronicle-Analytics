@@ -34,7 +34,7 @@ class FilesUtilTest {
             final Path directory = customHome.resolve(".chronicle.analytics.last");
             Files.createDirectories(directory.resolve("child"));
             assertDoesNotThrow(FilesUtil::removeLastUsedFileTimeStampSecond);
-            assertNotNull(System.getProperty("user.home")); // ensure property remains accessible
+            assertNotNull(System.getProperty("user.home"), "user.home remains accessible"); // ensure property remains accessible
         } finally {
             System.setProperty("user.home", originalUserHome);
         }

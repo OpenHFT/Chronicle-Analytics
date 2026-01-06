@@ -12,16 +12,16 @@ final class JUnitUtilTest {
 
     @Test
     void isJUnitAvailable() {
-        assertTrue(JUnitUtil.isJUnitAvailable());
+        assertTrue(JUnitUtil.isJUnitAvailable(), "JUnit is available on the classpath");
     }
 
     @Test
     void isClassAvailableString() {
-            assertTrue(JUnitUtil.isClassAvailable(String.class.getName()));
+        assertTrue(JUnitUtil.isClassAvailable(String.class.getName()), "String is available");
     }
 
     @Test
     void isClassAvailableInventedName() {
-        assertFalse(JUnitUtil.isClassAvailable("VeryUnliKELyNameToBeAnExisTINgClazz"));
+        assertFalse(JUnitUtil.isClassAvailable("VeryUnliKELyNameToBeAnExisTINgClazz"), "invented class name not found");
     }
 }

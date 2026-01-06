@@ -15,6 +15,6 @@ final class InternalAnalyticsExceptionTest {
     void create() {
         final InternalAnalyticsException e = new InternalAnalyticsException(MSG);
         final String actual = e.getMessage();
-        assertEquals(MSG, actual);
+        assertEquals(MSG, actual, "message preserved");
     }
 }

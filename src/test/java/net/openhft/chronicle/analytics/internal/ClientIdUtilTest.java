@@ -37,28 +37,28 @@ class ClientIdUtilTest {
     void acquireClientId() {
         // First time
         final String clientId = FilesUtil.acquireClientId(FILE_NAME, debugMessages::add);
-        assertDoesNotThrow(() -> UUID.fromString(clientId));
-        assertEquals(1, debugMessages.size());
+        assertDoesNotThrow(() -> UUID.fromString(clientId), "clientId is a UUID");
+        assertEquals(1, debugMessages.size(), "logs when clientId file is missing");
         final String msg = debugMessages.get(0);
-        assertTrue(msg.contains("file not present"));
-        assertTrue(msg.contains(FILE_NAME));
+        assertTrue(msg.contains("file not present"), "message indicates missing file");
+        assertTrue(msg.contains(FILE_NAME), "message includes file name");
 
         // Second time should give the same id
         final List<String> debugMessages2 = new ArrayList<>();
         final String clientId2 = FilesUtil.acquireClientId(FILE_NAME, debugMessages2::add);
-        assertEquals(clientId, clientId2);
-        assertTrue(debugMessages2.isEmpty());
+        assertEquals(clientId, clientId2, "reuses existing clientId");
+        assertTrue(debugMessages2.isEmpty(), "no debug output when clientId file exists");
     }
 
     @Test
     void acquireClientIdIllegalFile() {
         final String illegalFileName = ".";
         final String clientId = FilesUtil.acquireClientId(illegalFileName, debugMessages::add);
-        assertNotNull(clientId);
+        assertNotNull(clientId, "returns fallback clientId");
 
-        assertEquals(2, debugMessages.size());
-        assertTrue(debugMessages.get(0).contains("file not present"));
-        assertTrue(debugMessages.get(1).contains("Unable to create"));
+        assertEquals(2, debugMessages.size(), "logs missing file and create failure");
+        assertTrue(debugMessages.get(0).contains("file not present"), "first message indicates missing file");
+        assertTrue(debugMessages.get(1).contains("Unable to create"), "second message indicates create failure");
 
     }
 
