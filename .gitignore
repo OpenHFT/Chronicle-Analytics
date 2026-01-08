@@ -30,3 +30,4 @@ target/
 compat_reports/
 
 .DS_Store
+logs/
