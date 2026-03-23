@@ -16,8 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static net.openhft.chronicle.analytics.internal.FilesUtil.removeLastUsedFileTimeStampSecond;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 final class GoogleAnalytics3Test {
 
