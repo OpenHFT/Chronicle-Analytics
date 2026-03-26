@@ -24,7 +24,7 @@ class AnalyticsTest {
 
     @Test
     void builder() {
-        Analytics.Builder builder= Analytics.builder(TEST_STRING, TEST_STRING);
+        Analytics.Builder builder = Analytics.builder(TEST_STRING, TEST_STRING);
         assertNotNull(builder);
     }
 }

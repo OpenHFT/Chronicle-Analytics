@@ -16,7 +16,7 @@ final class JUnitUtilTest {
 
     @Test
     void isClassAvailableString() {
-            assertTrue(JUnitUtil.isClassAvailable(String.class.getName()));
+        assertTrue(JUnitUtil.isClassAvailable(String.class.getName()));
     }
 
     @Test
