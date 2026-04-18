@@ -22,6 +22,7 @@
     <packaging>bundle</packaging>
 
     <properties>
+        <license.year>2013-2026</license.year>
         <jacoco.line.coverage>0.89</jacoco.line.coverage>
         <jacoco.branch.coverage>0.72</jacoco.branch.coverage>
     </properties>
