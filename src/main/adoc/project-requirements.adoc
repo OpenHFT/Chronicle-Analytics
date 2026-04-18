@@ -1,4 +1,4 @@
-= Chronicle Analytics – Project Requirements
+= Chronicle Analytics - Project Requirements
 :lang: en-GB
 :toc:
 :sectnums:

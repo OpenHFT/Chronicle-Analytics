@@ -88,14 +88,14 @@ Configuration of the builder may be done using the following methods:
 | Return type | Method | Description
 
 |Analytics |build()|Creates and returns a new Analytics instance for this Builder.
-|Builder   |putEventParameter​(String key, String value)|Associates the provided value with the provided key in this builder's event parameters.
-|Builder   |putUserProperty​(String key, String value)|Associates the provided value with the provided key in this builder's user properties.
-|Builder   |withClientIdFileName​(String clientIdFileName)|Specifies a custom file name to use when storing a persistent client id used to identify returning users.
-|Builder   |withDebugLogger​(Consumer<String> debugLogger)|Specifies a custom logger that will receive debug messages.
-|Builder   |withErrorLogger​(Consumer<String> errorLogger)|Specifies a custom logger that will receive error messages.
-|Builder   |withFrequencyLimit​(long duration, TimeUnit timeUnit)|Limits the frequency by which events can be sent upstream to Google Analytics.
+|Builder   |putEventParameter(String key, String value)|Associates the provided value with the provided key in this builder's event parameters.
+|Builder   |putUserProperty(String key, String value)|Associates the provided value with the provided key in this builder's user properties.
+|Builder   |withClientIdFileName(String clientIdFileName)|Specifies a custom file name to use when storing a persistent client id used to identify returning users.
+|Builder   |withDebugLogger(Consumer<String> debugLogger)|Specifies a custom logger that will receive debug messages.
+|Builder   |withErrorLogger(Consumer<String> errorLogger)|Specifies a custom logger that will receive error messages.
+|Builder   |withFrequencyLimit(long duration, TimeUnit timeUnit)|Limits the frequency by which events can be sent upstream to Google Analytics.
 |Builder   |withReportDespiteJUnit()|Specifies that reporting shall be made even though JUnit test classes are available to the classloader.
-|Builder   |withUrl​(String url)|Specifies a custom URL to use when connecting to Google Analytics.
+|Builder   |withUrl(String url)|Specifies a custom URL to use when connecting to Google Analytics.
 |===
 
 NOTE: All parameters and return values are non-null.
@@ -112,8 +112,8 @@ Once we have obtained an Analytic instance, we can send events up stream to Goog
 |===
 | Return type | Method | Description
 
-|void|sendEvent​(String name)|Sends an event to Google Analytics as identified by the provided event `name`.
-|void|sendEvent​(String name, Map<String,​String> additionalEventParameters)|Sends an event to Google Analytics as identified by the provided event `name`, including the provided `additionalEventParameters` in the event.
+|void|sendEvent(String name)|Sends an event to Google Analytics as identified by the provided event `name`.
+|void|sendEvent(String name, Map<String,String> additionalEventParameters)|Sends an event to Google Analytics as identified by the provided event `name`, including the provided `additionalEventParameters` in the event.
 |===
 
 NOTE: All parameters are non-null.

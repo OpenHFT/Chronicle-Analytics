@@ -1,4 +1,4 @@
-= Chronicle Analytics – Security Review
+= Chronicle Analytics - Security Review
 :lang: en-GB
 :toc:
 :sectnums:
@@ -34,7 +34,7 @@ supply builder configuration.
 |Event names and parameters are caller-provided strings and may include sensitive data.
 |Upstream libraries must scrub personally identifiable or confidential information before calling
 the API. Provide configuration toggles to disable analytics at runtime.
-|Asynchronous sender uses a shared single-thread executor – exceptions are only surfaced via the
+|Asynchronous sender uses a shared single-thread executor - exceptions are only surfaced via the
 error logger.
 |Supply a non no-op error logger in production so that I/O failures can be traced. Consider routing
 to SLF4J or structured logging.
