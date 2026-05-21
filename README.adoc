@@ -14,8 +14,8 @@ image:https://javadoc-badge.appspot.com/net.openhft/chronicle-analytics.svg?labe
 image:https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000[License,link=https://github.com/OpenHFT/Chronicle-Analytics/blob/master/LICENSE]
 image:https://img.shields.io/gitter/room/OpenHFT/Lobby.svg?style=popout[link="https://gitter.im/OpenHFT/Lobby"]
 
-This library provides remote ingress to Google Analytics 4, allowing data, such as usage statistics, to be collected for Java applications.
-The data can subsequently be analysed using a variety of tools available from Google and other providers.
+This library provides remote ingress to Google Analytics 4, allowing data, such as usage-statistics, to be collected for Java applications. The data can subsequently be analysed using
+a variety of tools available from Google and other providers.
 
 Here is a short Java snippet showing how one could use the library to send a Google Analytics event for the measurement id "G-TDAZG4CU3G" using the api secret "k2hL3x2dQaKq9F2gQ-PNhQ".
 
@@ -38,17 +38,18 @@ This JAR is redundant but can help ensure this library is effectively disabled.
 
 To disable this jar include the following in Maven:
 
-[script,xml]
+[source,xml]
 ----
 <dependency>
     <groupId>net.openhft</groupId>
     <artifactId>chronicle-analytics</artifactId>
     <version>0.20.0</version>
+</dependency>
 ----
 
 To disable this library with Gradle, use:
 
-[script,xml]
+[source,xml]
 ----
 configurations {
     implementation {
@@ -64,7 +65,7 @@ The library and its use is further described hereunder.
 === API overview
 
 Applications will create and use instances of `Analytics`.
-Analytic instances are created using a builder pattern that optionally allows various custom parameters to be set, after which a new instance is created by invoking a `build()` method:
+Analytics instances are created using a builder pattern that optionally allows various custom parameters to be set, after which a new instance is created by invoking a `build()` method:
 
 [source,java,opts=novalidate]
 ----
@@ -105,9 +106,9 @@ NOTE: Invoking `withUrl("https://www.google-analytics.com/debug/mp/collect")` al
 
 NOTE: See the link:https://javadoc.io/doc/net.openhft/chronicle-analytics/latest/index.html[JavaDocs] for more details on the methods above.
 
-=== Analytic methods
+=== Analytics methods
 
-Once we have obtained an Analytic instance, we can send events up stream to Google using the following methods:
+Once we have obtained an Analytic instance, we can send events upstream to Google using the following methods:
 
 .Analytics Methods
 |===
