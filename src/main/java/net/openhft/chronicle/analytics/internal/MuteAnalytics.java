@@ -8,6 +8,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+/**
+ * {@link Analytics} implementation that discards all events.
+ *
+ * <p>Used when analytics should be disabled, for example when tests are running or configuration
+ * is incomplete. Events are counted locally via {@link #mutedEvents} for diagnostic purposes but
+ * never sent over the network.
+ */
 enum MuteAnalytics implements Analytics {
     INSTANCE;
     int mutedEvents = 0;

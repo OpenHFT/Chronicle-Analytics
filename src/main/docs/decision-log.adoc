@@ -1,0 +1,73 @@
+= Chronicle Analytics – Decision Log
+:lang: en-GB
+:toc:
+:sectnums:
+
+== Introduction
+
+This document records significant architectural decisions made during the development of Chronicle Analytics. It serves as a historical record of the "why" behind technical choices, particularly where trade-offs between functionality, performance, and dependency footprint were involved.
+
+== Decisions
+
+=== ADR-001: Zero-Dependency Policy for JSON Processing
+
+* **Status:** Accepted
+* **Date:** 2020-11-01
+* **Context:** The library communicates with Google Analytics 4 via a REST API that requires JSON payloads. Standard JSON libraries (like Jackson or Gson) are heavy and would impose transitive dependencies on downstream consumers, violating the requirement for a lightweight footprint.
+* **Decision:** We will not use any external JSON libraries. Instead, we will implement a minimal, internal utility (`JsonUtil`) capable of formatting the specific JSON structures required by the GA4 protocol.
+* **Consequences:**
+** Positive: The library remains extremely lightweight with no transitive dependencies (except `jetbrains-annotations` for compile-time checks).
+** Negative: The internal JSON formatter is not a general-purpose parser/generator and requires manual maintenance if the GA schema changes significantly.
+
+=== ADR-002: Automatic Muting in Test Environments
+
+* **Status:** Accepted
+* **Date:** 2020-11-01
+* **Context:** Analytics events generated during unit or integration testing pollute production datasets. Requiring developers to manually disable analytics in every test suite is error-prone.
+* **Decision:** The builder will automatically detect the presence of JUnit 4 or JUnit 5 classes (`org.junit.Test`, `org.junit.jupiter.api.Test`) on the classpath. If detected, the library will default to a `MuteAnalytics` implementation that drops all events.
+* **Consequences:**
+** Positive: Prevents accidental data pollution by default in CI/CD and local test environments.
+** Negative: Integration tests specifically designed to verify analytics reporting must explicitly opt-in using `.withReportDespiteJUnit()`.
+
+=== ADR-003: Single-Threaded Asynchronous Dispatch
+
+* **Status:** Accepted
+* **Date:** 2020-11-05
+* **Context:** The library must not block the calling thread (often a hot path in high-frequency trading applications). Creating a new thread for every event is too expensive, but a full thread pool is overkill for the expected volume.
+* **Decision:** All network I/O will be delegated to a single, static daemon thread (`chronicle-analytics-http-client`). This thread utilizes a `SingleThreadExecutor`.
+* **Consequences:**
+** Positive: Zero impact on the application's shutdown process (daemon thread). Minimal resource usage.
+** Negative: If the event rate exceeds the network throughput, the internal queue may fill (though we rely on `Executor` defaults), or latency may drift. However, this is acceptable for "best-effort" telemetry.
+
+=== ADR-004: Dual Support for GA3 and GA4
+
+* **Status:** Accepted
+* **Date:** 2020-11-10
+* **Context:** Google is transitioning from Universal Analytics (GA3) to Google Analytics 4 (GA4). Users may possess Measurement IDs for either version.
+* **Decision:** The `VanillaAnalyticsBuilder` will automatically select the transport mechanism based on the Measurement ID format.
+** IDs starting with `UA-` trigger the `GoogleAnalytics3` implementation (URL-encoded payload).
+** All other IDs trigger the `GoogleAnalytics4` implementation (JSON payload).
+* **Consequences:**
+** Positive: Seamless upgrade path for users; no code changes required when switching ID types.
+** Negative: The library must maintain two distinct formatting logic paths (`bodyFor` string builder vs `JsonUtil`).
+
+=== ADR-005: File-Based Client Identity Persistence
+
+* **Status:** Accepted
+* **Date:** 2020-11-15
+* **Context:** To track "User" sessions across application restarts, a persistent identifier (Client ID) is required. The library cannot rely on a registry or database being present.
+* **Decision:** Persist a random UUID in a hidden file located in the user's home directory (`~/.chronicle.analytics.client.id`).
+* **Consequences:**
+** Positive: Simple, zero-config persistence that survives application restarts.
+** Negative: Privacy implications (writing to user home). Requires file system permissions.
+** Mitigation: The file location is configurable via `withClientIdFileName()` for restricted environments.
+
+=== ADR-006: Best-Effort Delivery (No Retry Policy)
+
+* **Status:** Accepted
+* **Date:** 2020-11-20
+* **Context:** Network instability is inevitable. Implementing complex retry logic (exponential backoff, offline caching) increases code complexity and memory usage.
+* **Decision:** Treat all analytics events as "fire-and-forget". If the HTTP request fails, the error is logged (if an error logger is configured), but the event is dropped.
+* **Consequences:**
+** Positive: Keeps the library simple and prevents memory leaks from queuing undelivered events during outages.
+** Negative: Gaps in data during network instability. This is deemed acceptable for aggregate usage statistics.

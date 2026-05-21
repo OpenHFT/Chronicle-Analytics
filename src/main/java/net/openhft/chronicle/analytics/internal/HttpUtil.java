@@ -14,6 +14,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
+/**
+ * Internal HTTP client utility used by the analytics subsystem.
+ *
+ * <p>Requests are executed asynchronously on a single daemon thread so that analytics reporting
+ * does not block application threads. Basic timeouts and response logging are handled here;
+ * callers provide error and debug loggers via {@link #send(String, String, Consumer, Consumer)}.
+ */
 final class HttpUtil {
 
     private static final int DEFAULT_TIME_OUT_MS = 2_000;

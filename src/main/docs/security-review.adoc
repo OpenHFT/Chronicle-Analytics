@@ -2,6 +2,7 @@
 :lang: en-GB
 :toc:
 :sectnums:
+:source-highlighter: rouge
 
 == Introduction
 
@@ -12,7 +13,7 @@ This review captures expected data flows, known risks, and the mitigations that 
 == Data Flow Summary
 
 * `Analytics.sendEvent` assembles a small payload containing the event name, optional event parameters, and any configured user properties.
-* A client identifier is loaded from `${clientIdFileName}` (defaults to a hidden file in
+* A client identifier is loaded from `$\{clientIdFileName}` (defaults to a hidden file in
 `${user.home}`) and created if missing.
 * Google Analytics 3 requests use the Measurement Protocol via HTTPS POST to
 `https://www.google-analytics.com/collect`.

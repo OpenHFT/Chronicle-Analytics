@@ -14,6 +14,14 @@ import static java.util.stream.Collectors.joining;
 import static net.openhft.chronicle.analytics.internal.JsonUtil.asElement;
 import static net.openhft.chronicle.analytics.internal.JsonUtil.jsonElement;
 
+/**
+ * {@link Analytics} implementation that targets the Google Analytics 4 measurement protocol.
+ *
+ * <p>Events are rendered as JSON documents in the format expected by GA4's HTTP API and submitted
+ * asynchronously via {@link HttpUtil#send(String, String, java.util.function.Consumer, java.util.function.Consumer)}.
+ * Frequency limiting, client identifiers, and muting semantics are provided by
+ * {@link AbstractGoogleAnalytics}.
+ */
 final class GoogleAnalytics4 extends AbstractGoogleAnalytics implements Analytics {
 
     GoogleAnalytics4(@NotNull final AnalyticsConfiguration configuration) {

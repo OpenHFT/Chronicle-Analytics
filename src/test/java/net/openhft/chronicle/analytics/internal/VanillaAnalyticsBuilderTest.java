@@ -78,13 +78,13 @@ class VanillaAnalyticsBuilderTest {
 
     @Test
     void withReportDespiteJUnit() {
-        assertTrue(newInstance().withReportDespiteJUnit().build() instanceof GoogleAnalytics4);
+        assertInstanceOf(GoogleAnalytics4.class, newInstance().withReportDespiteJUnit().build());
     }
 
     @Test
     void withReportDespiteJUnit2() {
         final Analytics analytics = newInstance().build();
-        assertTrue(newInstance().build() instanceof MuteAnalytics);
+        assertInstanceOf(MuteAnalytics.class, analytics);
     }
 
     @Test
