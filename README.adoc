@@ -9,7 +9,7 @@ Per Minborg
 :source-highlighter: rouge
 :toc-title: Table of contents
 
-image:https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics/badge.svg[Maven Central,link=https://maven-badges.herokuapp.com/maven-central/net.openhft/chronicle-analytics]
+image:https://img.shields.io/maven-central/v/net.openhft/chronicle-analytics.svg[Maven Central,link=https://central.sonatype.com/artifact/net.openhft/chronicle-analytics]
 image:https://javadoc-badge.appspot.com/net.openhft/chronicle-analytics.svg?label=javadoc[JavaDoc,link=https://www.javadoc.io/doc/net.openhft/chronicle-analytics]
 image:https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000[License,link=https://github.com/OpenHFT/Chronicle-Analytics/blob/master/LICENSE]
 image:https://img.shields.io/gitter/room/OpenHFT/Lobby.svg?style=popout[link="https://gitter.im/OpenHFT/Lobby"]
