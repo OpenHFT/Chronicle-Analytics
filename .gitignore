@@ -27,6 +27,7 @@ hs_err_pid*
 target/
 
 .idea/
+.claude/
 compat_reports/
 
 .DS_Store

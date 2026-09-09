@@ -14,6 +14,14 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static net.openhft.chronicle.analytics.internal.FilesUtil.isSameAsLastUsedFileTimeStampSecond;
 
+/**
+ * Common base for Chronicle analytics implementations that post events to Google Analytics.
+ * <p>
+ * Handles persistent client id resolution, host-level muting to avoid bursts when many JVMs start
+ * simultaneously, and lightweight rate limiting via {@link #attemptToSend()}. Subclasses only need
+ * to implement {@link #httpSend(String, Map)} to push a fully prepared event payload to the target
+ * endpoint.
+ */
 abstract class AbstractGoogleAnalytics implements Analytics {
 
     private final AnalyticsConfiguration configuration;

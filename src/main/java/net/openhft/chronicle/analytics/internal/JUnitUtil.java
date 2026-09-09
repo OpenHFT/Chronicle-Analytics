@@ -7,6 +7,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.stream.Stream;
 
+/**
+ * Utility for detecting whether JUnit is present on the classpath.
+ *
+ * <p>The analytics builder uses this to disable reporting when tests are running, unless the
+ * caller explicitly opts in via configuration.
+ */
 final class JUnitUtil {
 
     private JUnitUtil() {}

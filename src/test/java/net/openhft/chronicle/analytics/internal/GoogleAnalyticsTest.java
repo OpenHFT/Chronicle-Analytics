@@ -137,7 +137,7 @@ final class GoogleAnalyticsTest {
         final int lastSecond = LocalTime.now().toSecondOfDay();
         // Wait for a fresh second
         while (LocalTime.now().toSecondOfDay() == lastSecond) {
-            // spin wait
+            Thread.yield();
         }
     }
 

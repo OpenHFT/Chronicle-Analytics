@@ -20,6 +20,9 @@ public class AnalyticsExampleMain {
 
         analytics.sendEvent("completed");
 
+        AnalyticsExampleMain exampleMain = new AnalyticsExampleMain();
+        exampleMain.showBuilder();
+        exampleMain.shortExample();
     }
 
     private void showBuilder() {
