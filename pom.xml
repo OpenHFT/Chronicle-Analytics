@@ -138,10 +138,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <!-- This will give each test class its own JVM so you can safely set
-                         e.g. system properties per test class but not method -->
                     <forkCount>4</forkCount>
                     <reuseForks>true</reuseForks>
+                    <!-- Rate-limit files and client IDs belong to one test worker. -->
+                    <workingDirectory>${project.build.directory}/surefire-home-${surefire.forkNumber}</workingDirectory>
+                    <systemPropertyVariables>
+                        <user.home>${project.build.directory}/surefire-home-${surefire.forkNumber}</user.home>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
